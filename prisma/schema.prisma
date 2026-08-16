@@ -1,0 +1,243 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+// ENUMS
+// -----------------------------------------------------------------------------
+
+enum Role {
+  RETAIL
+  TRADE
+  ADMIN
+}
+
+enum TradeStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AddressType {
+  BILLING
+  SHIPPING
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  PAY_LATER
+  BANK_TRANSFER
+  RAZORPAY
+  COD
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum DeliveryType {
+  DELIVERY
+  PICKUP
+}
+
+enum QuoteStatus {
+  OPEN
+  RESPONDED
+  CONVERTED
+  REJECTED
+}
+
+// -----------------------------------------------------------------------------
+// CORE MODELS
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  phone         String?
+  
+  role          Role      @default(RETAIL)
+  
+  // Trade Specific Fields
+  gstNumber     String?
+  tradeStatus   TradeStatus?
+  creditLimit   Float?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  quotes        Quote[]
+}
+
+model Address {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      AddressType
+  street    String
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean     @default(false)
+  
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  orders    Order[]     @relation("ShippingAddress")
+}
+
+// -----------------------------------------------------------------------------
+// CATALOG MODELS
+// -----------------------------------------------------------------------------
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  parentId  String?
+  parent    Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryHierarchy")
+  imageUrl  String?
+  
+  products  Product[]
+}
+
+model Product {
+  id             String    @id @default(cuid())
+  sku            String    @unique
+  title          String
+  slug           String    @unique
+  brand          String?
+  categoryId     String
+  category       Category  @relation(fields: [categoryId], references: [id])
+  description    String?   @db.Text
+  basePrice      Float
+  stockCount     Int       @default(0)
+  datasheetUrl   String?
+  isActive       Boolean   @default(true)
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  specifications ProductSpecification[]
+  images         ProductImage[]
+  bulkPricing    BulkPricingTier[]
+  orderItems     OrderItem[]
+  quoteItems     QuoteItem[]
+}
+
+model ProductSpecification {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  value     String
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  isPrimary Boolean  @default(false)
+}
+
+model BulkPricingTier {
+  id           String   @id @default(cuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  minQuantity  Int
+  pricePerUnit Float
+}
+
+// -----------------------------------------------------------------------------
+// COMMERCE MODELS
+// -----------------------------------------------------------------------------
+
+model Order {
+  id                String         @id @default(cuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id])
+  totalAmount       Float
+  taxAmount         Float
+  status            OrderStatus    @default(PENDING)
+  paymentMethod     PaymentMethod
+  paymentStatus     PaymentStatus  @default(PENDING)
+  
+  shippingAddressId String?
+  shippingAddress   Address?       @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  
+  deliveryType      DeliveryType
+  
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  items             OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float
+}
+
+model Quote {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  message     String?     @db.Text
+  adminNotes  String?     @db.Text
+  status      QuoteStatus @default(OPEN)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  items       QuoteItem[]
+}
+
+model QuoteItem {
+  id                String  @id @default(cuid())
+  quoteId           String
+  quote             Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId         String
+  product           Product @relation(fields: [productId], references: [id])
+  requestedQuantity Int
+  offeredPrice      Float?
+}
+
+// -----------------------------------------------------------------------------
+// OPERATIONAL MODELS
+// -----------------------------------------------------------------------------
+
+model StoreLocation {
+  id             String  @id @default(cuid())
+  name           String
+  address        String  @db.Text
+  contactPhone   String?
+  operatingHours String?
+  latitude       Float?
+  longitude      Float?
+}
