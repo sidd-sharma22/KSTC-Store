@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Search, MessageSquare, Store, User, ShoppingCart, Menu, X, Home as HomeIcon, LogOut, ShieldCheck, Clock, Building } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/providers/CartProvider";
 import { getCurrentUserAction, logoutAction } from "@/app/actions/auth";
 import type { SessionPayload } from "@/lib/session";
 

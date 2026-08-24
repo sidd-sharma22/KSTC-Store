@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/providers/CartProvider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {

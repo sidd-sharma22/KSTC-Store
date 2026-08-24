@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ShoppingCart, Heart, Check } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/providers/CartProvider";
 import { useState } from "react";
 
 export interface ProductCardProps {

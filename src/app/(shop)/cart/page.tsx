@@ -3,7 +3,7 @@
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { Trash2, ChevronRight, Lock, CheckCircle2, ShoppingCart, Plus, Minus } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/providers/CartProvider";
 
 export default function CartCheckoutPage() {
   const { items, removeFromCart, updateQuantity, clearCart, totalItems, subtotal } = useCart();

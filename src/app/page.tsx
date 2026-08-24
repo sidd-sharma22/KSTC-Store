@@ -149,7 +149,7 @@ export default function Home() {
           <div className="bg-white group rounded-2xl border border-brand-border hover:border-brand-accent/40 shadow-sm hover:shadow-md transition-all duration-300 w-40 h-40 md:w-56 md:h-56 flex flex-col items-center justify-center p-6 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative w-full h-full flex items-center justify-center">
-              <a href="https://www.sentiniflopipes.com/" target="_blank"><Image src="/sentini-logo.png" alt="Sentini Flopipes" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
+              <a href="https://www.sentiniflopipes.com/" target="_blank"><Image src="/brands/sentini.png" alt="Sentini Flopipes" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
             </div>
           </div>
 
@@ -157,7 +157,7 @@ export default function Home() {
           <div className="bg-white group rounded-2xl border border-brand-border hover:border-brand-accent/40 shadow-sm hover:shadow-md transition-all duration-300 w-40 h-40 md:w-56 md:h-56 flex flex-col items-center justify-center p-6 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative w-full h-full flex items-center justify-center">
-              <a href="https://www.johnsonpedder.in/" target="_blank"><Image src="/johnson-logo.png" alt="Johnson Pedders" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
+              <a href="https://www.johnsonpedder.in/" target="_blank"><Image src="/brands/johnson-pedders.png" alt="Johnson Pedders" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
             </div>
           </div>
 
@@ -165,17 +165,11 @@ export default function Home() {
           <div className="bg-white group rounded-2xl border border-brand-border hover:border-brand-accent/40 shadow-sm hover:shadow-md transition-all duration-300 w-40 h-40 md:w-56 md:h-56 flex flex-col items-center justify-center p-6 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="text-center z-10 group-hover:text-brand-accent transition-colors">
-              <a href="https://www.polyworld.in/" target="_blank"><Image src="/polyworld-logo.png" alt="Paras Tanks" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
+              <a href="https://www.polyworld.in/" target="_blank"><Image src="/brands/polyworld.png" alt="Polyworld Tanks" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
             </div>
           </div>
 
-          {/* Polyworld Tanks
-          <div className="bg-white group rounded-2xl border border-brand-border hover:border-brand-accent/40 shadow-sm hover:shadow-md transition-all duration-300 w-40 h-40 md:w-56 md:h-56 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="text-center z-10 group-hover:text-brand-accent transition-colors">
-              <a href="https://www.polyworld.in/" target="_blank"><Image src="/polyworld-logo.png" alt="Paras Tanks" fill className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" /></a>
-            </div>
-          </div> */}
+
         </div>
       </section>
     </div>

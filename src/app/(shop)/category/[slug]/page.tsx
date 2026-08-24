@@ -63,7 +63,7 @@ const ALL_PRODUCTS = [
   },
   {
     id: "5",
-    title: "Sentini CPVC Brass Elbow 90°",
+    title: "Sentini CPVC Brass Elbow 90┬░",
     brand: "Sentini Flopipes",
     category: "Pipes & Fittings",
     material: "CPVC",
@@ -326,9 +326,9 @@ export default function CategoryPage() {
         </button>
         {openSections.price && (
           <div className="space-y-3 mt-4">
-            <FilterRadio id="price-1" label="Under ₹500" value="under-500" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
-            <FilterRadio id="price-2" label="₹500 - ₹2,000" value="500-2000" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
-            <FilterRadio id="price-3" label="Above ₹2,000" value="above-2000" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
+            <FilterRadio id="price-1" label="Under Γé╣500" value="under-500" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
+            <FilterRadio id="price-2" label="Γé╣500 - Γé╣2,000" value="500-2000" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
+            <FilterRadio id="price-3" label="Above Γé╣2,000" value="above-2000" selected={selectedPriceRange} onSelect={setSelectedPriceRange} />
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 "use server";
 
 import crypto from "crypto";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 import { sendOtpEmail } from "@/lib/email";
 import { createSession, destroySession, getSession, SessionPayload } from "@/lib/session";
 

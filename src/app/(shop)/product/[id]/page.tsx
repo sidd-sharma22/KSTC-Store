@@ -3,7 +3,7 @@
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { ChevronRight, Heart, Share2, ShieldCheck, Truck, ArrowLeft, Check, Minus, Plus } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/providers/CartProvider";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ const PRODUCTS: Record<string, {
     minTradeQty: 50,
     inStock: true,
     description: "High-quality CPVC pipe designed for hot and cold water distribution systems. Manufactured using premium resins for maximum durability and heat resistance. Conforms to IS 15778.",
-    features: ["Length: 3 Meters", "Standard: SDR 11", "Size: 1/2 inch (15mm)", "Max Operating Temp: 93°C", "Lead-free and safe for drinking water"],
+    features: ["Length: 3 Meters", "Standard: SDR 11", "Size: 1/2 inch (15mm)", "Max Operating Temp: 93┬░C", "Lead-free and safe for drinking water"],
   },
   "2": {
     id: "2",
@@ -63,15 +63,15 @@ const PRODUCTS: Record<string, {
   },
   "5": {
     id: "5",
-    title: "Sentini CPVC Brass Elbow 90°",
+    title: "Sentini CPVC Brass Elbow 90┬░",
     brand: "Sentini Flopipes",
     category: "Pipes & Fittings",
     retailPrice: 89,
     tradePrice: 75,
     minTradeQty: 180,
     inStock: true,
-    description: "CPVC-to-brass transition elbow for secure connections to metal fittings. 90° angle for directional pipe changes.",
-    features: ["Size: 1/2 x 1/2 inch", "Angle: 90°", "CPVC to Brass", "IS 15778 Certified", "Hot & Cold Water Compatible"],
+    description: "CPVC-to-brass transition elbow for secure connections to metal fittings. 90┬░ angle for directional pipe changes.",
+    features: ["Size: 1/2 x 1/2 inch", "Angle: 90┬░", "CPVC to Brass", "IS 15778 Certified", "Hot & Cold Water Compatible"],
   },
   "6": {
     id: "6",
@@ -155,7 +155,7 @@ const PRODUCTS: Record<string, {
     minTradeQty: 5,
     inStock: true,
     description: "Luxury 8-inch round rain shower head with anti-lime nozzles. Chrome finish for a premium look. Ceiling or wall mount compatible.",
-    features: ["Size: 8 inch Round", "Finish: Chrome", "Anti-Lime Nozzles", "Ceiling/Wall Mount", "360° Swivel"],
+    features: ["Size: 8 inch Round", "Finish: Chrome", "Anti-Lime Nozzles", "Ceiling/Wall Mount", "360┬░ Swivel"],
   },
 };
 
