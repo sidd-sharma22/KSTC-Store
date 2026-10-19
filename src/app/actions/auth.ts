@@ -44,33 +44,14 @@ export async function sendOtpAction(params: SendOtpParams): Promise<AuthActionRe
       return { success: false, error: "Please enter a valid email address." };
     }
 
-    // Check existing account status in database
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (params.isSignUp && existingUser) {
-      return {
-        success: false,
-        error: "An account with this email already exists. Please sign in instead.",
-      };
-    }
-
-    if (!params.isSignUp && !existingUser) {
-      return {
-        success: false,
-        error: "No account found with this email. Please sign up to create one.",
-      };
-    }
-
     if (params.isSignUp && params.role === "TRADE" && !params.shopName?.trim()) {
       return {
         success: false,
-        error: "Shop/Business Name is required for trade accounts.",
+        error: "Shop / Business Name is required for trade accounts.",
       };
     }
 
-    // Rate limiting: check if OTP was created in the last 60 seconds
+    // Rate limiting: check if OTP was created in the last 45 seconds
     const latestOtp = await prisma.verificationOtp.findFirst({
       where: { email },
       orderBy: { createdAt: "desc" },
@@ -78,11 +59,11 @@ export async function sendOtpAction(params: SendOtpParams): Promise<AuthActionRe
 
     if (latestOtp) {
       const secondsAgo = (Date.now() - new Date(latestOtp.createdAt).getTime()) / 1000;
-      if (secondsAgo < 60) {
-        const waitRemaining = Math.ceil(60 - secondsAgo);
+      if (secondsAgo >= 0 && secondsAgo < 45) {
+        const waitRemaining = Math.ceil(45 - secondsAgo);
         return {
           success: false,
-          error: `Please wait ${waitRemaining} seconds before requesting a new code.`,
+          error: `Please wait ${waitRemaining}s before requesting a new verification code.`,
         };
       }
     }
@@ -110,7 +91,7 @@ export async function sendOtpAction(params: SendOtpParams): Promise<AuthActionRe
     if (!emailResult.success) {
       return {
         success: false,
-        error: emailResult.error || "Failed to deliver OTP email. Please try again.",
+        error: emailResult.error || "Failed to deliver OTP email. Please check your email configuration.",
       };
     }
 
@@ -122,9 +103,10 @@ export async function sendOtpAction(params: SendOtpParams): Promise<AuthActionRe
     };
   } catch (error: unknown) {
     console.error("sendOtpAction error:", error);
+    const errMessage = error instanceof Error ? error.message : "Database connection error";
     return {
       success: false,
-      error: "An unexpected error occurred while sending verification code. Please try again.",
+      error: `Failed to process OTP request: ${errMessage}. Please try again.`,
     };
   }
 }
@@ -164,9 +146,11 @@ export async function verifyOtpAction(params: VerifyOtpParams): Promise<AuthActi
       where: { email },
     });
 
-    let user;
+    let user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-    if (params.isSignUp) {
+    if (!user) {
       // Create new user record
       user = await prisma.user.create({
         data: {
@@ -180,25 +164,26 @@ export async function verifyOtpAction(params: VerifyOtpParams): Promise<AuthActi
         },
       });
     } else {
-      // Find existing user
-      user = await prisma.user.findUnique({
-        where: { email },
+      // Update existing user verification status and trade details if submitted
+      const updateData: Record<string, unknown> = {
+        emailVerified: new Date(),
+      };
+      if (params.name?.trim() && !user.name) {
+        updateData.name = params.name.trim();
+      }
+      if (params.role === "TRADE") {
+        if (params.shopName?.trim()) updateData.shopName = params.shopName.trim();
+        if (params.gstNumber?.trim()) updateData.gstNumber = params.gstNumber.trim();
+        if (user.role === "RETAIL") {
+          updateData.role = "TRADE";
+          updateData.tradeStatus = "PENDING";
+        }
+      }
+
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: updateData,
       });
-
-      if (!user) {
-        return {
-          success: false,
-          error: "Account not found. Please sign up first.",
-        };
-      }
-
-      // Mark email as verified if not yet done
-      if (!user.emailVerified) {
-        user = await prisma.user.update({
-          where: { id: user.id },
-          data: { emailVerified: new Date() },
-        });
-      }
     }
 
     const sessionPayload: SessionPayload = {
@@ -215,14 +200,15 @@ export async function verifyOtpAction(params: VerifyOtpParams): Promise<AuthActi
 
     return {
       success: true,
-      message: params.isSignUp ? "Account created successfully!" : "Signed in successfully!",
+      message: params.isSignUp ? "Account setup completed!" : "Signed in successfully!",
       user: sessionPayload,
     };
   } catch (error: unknown) {
     console.error("verifyOtpAction error:", error);
+    const errMessage = error instanceof Error ? error.message : "Verification error";
     return {
       success: false,
-      error: "An unexpected error occurred during verification. Please try again.",
+      error: `Verification failed: ${errMessage}. Please try again.`,
     };
   }
 }

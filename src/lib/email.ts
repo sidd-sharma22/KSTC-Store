@@ -40,6 +40,9 @@ export async function sendOtpEmail(email: string, otp: string): Promise<SendOtpR
       port,
       secure: port === 465,
       auth: { user, pass },
+      connectionTimeout: 10000,
+      greetingTimeout: 5000,
+      socketTimeout: 15000,
     });
 
     const htmlContent = `

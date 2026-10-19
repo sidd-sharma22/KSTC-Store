@@ -45,3 +45,5 @@ next-env.d.ts
 
 # large assets — keep out of git
 *.pdf
+
+.vercel
