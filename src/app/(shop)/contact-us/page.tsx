@@ -1,6 +1,23 @@
+import type { Metadata } from "next";
 import { MapPin, Phone, Clock, Navigation, Globe } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+
+export const metadata: Metadata = {
+  title: "Contact Us & Warehouse Showroom Location",
+  description:
+    "Get in touch with Khatu Shyam Trading Co. in Maharajpura, Gwalior. Wholesale inquiries, dealer pricing, and technical support for Sentini pipes, Johnson Pedders, and Polyworld tanks.",
+  alternates: {
+    canonical: "https://store-kstco.vercel.app/contact-us",
+  },
+  openGraph: {
+    title: "Contact Us & Warehouse Showroom | Khatu Shyam Trading Co. Gwalior",
+    description:
+      "Visit our wholesale warehouse in Maharajpura, Gwalior or contact our commercial sales team directly for distributor pricing.",
+    url: "https://store-kstco.vercel.app/contact-us",
+    images: [{ url: "/og-preview.png", width: 1200, height: 630, alt: "Contact KSTC Gwalior" }],
+  },
+};
 
 export default function ContactUsPage() {
   return (

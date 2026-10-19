@@ -1,10 +1,14 @@
+import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { Heart, ChevronRight, ShoppingBag } from "lucide-react";
 
-export const metadata = {
-  title: "Wishlist | Khatu Shyam Trading Co.",
-  description: "Your saved products and plumbing favorites at KSTC.",
+export const metadata: Metadata = {
+  title: "My Wishlist",
+  description: "Your saved pipes, sanitary ware, and fittings for quick ordering and contractor quotation at KSTC.",
+  alternates: {
+    canonical: "https://store-kstco.vercel.app/wishlist",
+  },
 };
 
 export default function WishlistPage() {
