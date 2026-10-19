@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/providers/CartProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Khatu Shyam Trading Co. - Authorized Wholesale Distributor",
@@ -54,6 +55,7 @@ export default function RootLayout({
             </span>
           </a>
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   );
