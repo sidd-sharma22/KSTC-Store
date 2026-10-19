@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description:
       "Visit our wholesale warehouse in Maharajpura, Gwalior or contact our commercial sales team directly for distributor pricing.",
     url: "https://store-kstco.vercel.app/contact-us",
-    images: [{ url: "/og-preview.png", width: 1200, height: 630, alt: "Contact KSTC Gwalior" }],
+    images: [{ url: "/og-preview.png", width: 1024, height: 547, alt: "Contact KSTC Gwalior" }],
   },
 };
 
