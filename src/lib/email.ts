@@ -12,11 +12,12 @@ interface SendOtpResult {
  * Sends verification OTPs using standard SMTP (nodemailer) with a developer fallback mode.
  */
 export async function sendOtpEmail(email: string, otp: string): Promise<SendOtpResult> {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT) || 587;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const from = process.env.SMTP_FROM || (user ? `"Khatu Shyam Trading Co." <${user}>` : `"Khatu Shyam Trading Co." <noreply@khatushyamtrading.com>`);
+  const host = process.env.SMTP_HOST?.trim().replace(/[\r\n]/g, "");
+  const port = Number(process.env.SMTP_PORT?.trim().replace(/[\r\n]/g, "")) || 465;
+  const user = process.env.SMTP_USER?.trim().replace(/[\r\n]/g, "");
+  const pass = process.env.SMTP_PASS?.trim().replace(/[\r\n]/g, "");
+  const rawFrom = process.env.SMTP_FROM?.trim().replace(/[\r\n]/g, "");
+  const from = rawFrom || (user ? `"Khatu Shyam Trading Co." <${user}>` : `"Khatu Shyam Trading Co." <noreply@khatushyamtrading.com>`);
 
   // Dev / Fallback mode when SMTP credentials are not yet configured in .env
   if (!host || !user || !pass) {

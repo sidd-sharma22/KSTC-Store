@@ -14,7 +14,7 @@ const SESSION_COOKIE_NAME = "kstc_session";
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.AUTH_SECRET;
+  const secret = process.env.AUTH_SECRET?.trim().replace(/[\r\n]/g, "");
   if (!secret) {
     if (process.env.NODE_ENV === "production") {
       throw new Error("AUTH_SECRET environment variable must be set in production.");

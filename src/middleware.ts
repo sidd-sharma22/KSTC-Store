@@ -5,7 +5,7 @@ import { jwtVerify } from "jose";
 const SESSION_COOKIE_NAME = "kstc_session";
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.AUTH_SECRET;
+  const secret = process.env.AUTH_SECRET?.trim().replace(/[\r\n]/g, "");
   if (!secret) {
     if (process.env.NODE_ENV === "production") {
       throw new Error("AUTH_SECRET environment variable must be set in production.");

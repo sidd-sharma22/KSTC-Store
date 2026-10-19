@@ -8,7 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function getPrismaClient(): PrismaClient {
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = process.env.DATABASE_URL?.trim().replace(/[\r\n]/g, "");
   const pool = globalForPrisma.pgPool ?? new Pool({ connectionString });
   
   if (process.env.NODE_ENV !== "production") {
