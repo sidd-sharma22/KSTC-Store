@@ -96,15 +96,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.png" },
-      { url: "/icon.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/kstc-logo.png" },
+      { url: "/kstc-logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/kstc-logo.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/kstc-logo.png", sizes: "180x180", type: "image/png" },
+      { url: "/kstc-logo.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/icon.png",
+    shortcut: "/kstc-logo.png",
   },
 };
 
@@ -117,7 +117,7 @@ const jsonLd = {
       name: "Khatu Shyam Trading Co.",
       alternateName: ["KSTC", "KSTC Store", "Khatu Shyam Trading Company"],
       url: SITE_URL,
-      logo: `${SITE_URL}/icon.png`,
+      logo: `${SITE_URL}/kstc-logo.png`,
       image: `${SITE_URL}/og-preview.png`,
       description: SITE_DESCRIPTION,
       telephone: "+91-93404-86840",
