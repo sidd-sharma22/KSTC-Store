@@ -6,6 +6,7 @@ import { CartProvider } from "@/providers/CartProvider";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kstc.vercel.app"),
   title: "Khatu Shyam Trading Co. - Authorized Wholesale Distributor",
   description: "B2B Wholesale & Retail E-commerce for Sentini Flopipes, Johnson Pedders, and Polyworld Water Tanks in Gwalior & Chambal region.",
   openGraph: {
