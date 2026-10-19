@@ -5,7 +5,13 @@ import { jwtVerify } from "jose";
 const SESSION_COOKIE_NAME = "kstc_session";
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.AUTH_SECRET || "kstc-super-secret-internal-jwt-key-2026-auth";
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("AUTH_SECRET environment variable must be set in production.");
+    }
+    return new TextEncoder().encode("kstc-dev-fallback-insecure-secret-key-change-in-env");
+  }
   return new TextEncoder().encode(secret);
 }
 

@@ -14,7 +14,13 @@ const SESSION_COOKIE_NAME = "kstc_session";
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.AUTH_SECRET || "kstc-super-secret-internal-jwt-key-2026-auth";
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("AUTH_SECRET environment variable must be set in production.");
+    }
+    return new TextEncoder().encode("kstc-dev-fallback-insecure-secret-key-change-in-env");
+  }
   return new TextEncoder().encode(secret);
 }
 
@@ -61,10 +67,10 @@ export async function getSession(): Promise<SessionPayload | null> {
       email: payload.email as string,
       name: (payload.name as string) || null,
       role: (payload.role as "RETAIL" | "TRADE" | "ADMIN") || "RETAIL",
-      tradeStatus: (payload.tradeStatus as any) || null,
+      tradeStatus: (payload.tradeStatus as "PENDING" | "APPROVED" | "REJECTED" | null) || null,
       shopName: (payload.shopName as string) || null,
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }

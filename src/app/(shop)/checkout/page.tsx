@@ -33,7 +33,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<CheckoutStep>("details");
   const [deliveryDetails, setDeliveryDetails] = useState<DeliveryDetails>({
     firstName: "", lastName: "", email: "", phone: "",
-    address: "", city: "Gwalior", state: "Madhya Pradesh", pincode: "", notes: "",
+    address: "", city: "", state: "", pincode: "", notes: "",
   });
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [errors, setErrors] = useState<Partial<Record<keyof DeliveryDetails, string>>>({});
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center py-24 px-4">
-        <h2 className="text-2xl font-bold font-heading text-brand-primary mb-2">No Items to Checkout</h2>
+        <h2 className="text-2xl font-bold font-heading text-brand-dark mb-2">No Items to Checkout</h2>
         <p className="text-brand-text/60 mb-8 text-center max-w-sm">
           Your cart is empty. Add some products before proceeding to checkout.
         </p>
@@ -114,86 +114,85 @@ export default function CheckoutPage() {
   const stepIndex = step === "details" ? 2 : 3;
 
   return (
-    <div className="flex flex-col flex-1 bg-brand-background">
+    <div className="flex flex-col flex-1">
 
       {/* Checkout Header / Progress */}
-      <div className="bg-white border-b border-brand-border/50 sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="font-heading font-bold text-brand-primary">KSTC Checkout</Link>
-          <div className="hidden sm:flex items-center gap-4 text-sm font-medium">
+      <div className="bg-white/90 backdrop-blur-md border-b border-[#E5EEE8] sticky top-0 z-30 shadow-2xs">
+        <div className="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+          <Link href="/" className="font-heading font-black text-brand-dark text-sm sm:text-base tracking-tight">KSTC Checkout</Link>
+          <div className="hidden sm:flex items-center gap-4 text-xs font-bold uppercase tracking-wider">
             {/* Step 1: Cart */}
-            <Link href="/cart" className="flex items-center gap-2 text-green-600">
-              <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs">
-                <CheckCircle2 className="w-4 h-4" />
+            <Link href="/cart" className="flex items-center gap-2 text-[#0F8A63]">
+              <span className="w-5 h-5 rounded-full bg-[#0F8A63] text-white flex items-center justify-center text-[10px] font-black">
+                <CheckCircle2 className="w-3.5 h-3.5" />
               </span>
               Cart
             </Link>
-            <div className={`w-10 h-px ${stepIndex >= 2 ? "bg-brand-primary" : "bg-brand-border"}`} />
+            <div className={`w-8 h-px ${stepIndex >= 2 ? "bg-[#0F8A63]" : "bg-[#E5EEE8]"}`} />
             {/* Step 2: Details */}
             <button
+              type="button"
               onClick={() => setStep("details")}
-              className={`flex items-center gap-2 ${stepIndex >= 2 ? "text-brand-primary" : "text-brand-text/40"}`}
+              className={`flex items-center gap-2 cursor-pointer ${stepIndex >= 2 ? "text-[#0F8A63]" : "text-brand-text-muted"}`}
             >
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                stepIndex > 2 ? "bg-green-500 text-white" : stepIndex === 2 ? "bg-brand-primary text-white" : "border-2 border-brand-border"
-              }`}>
-                {stepIndex > 2 ? <CheckCircle2 className="w-4 h-4" /> : "2"}
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${stepIndex > 2 ? "bg-[#0F8A63] text-white" : stepIndex === 2 ? "bg-[#0F8A63] text-white" : "border border-[#E5EEE8]"
+                }`}>
+                {stepIndex > 2 ? <CheckCircle2 className="w-3.5 h-3.5" /> : "2"}
               </span>
               Details
             </button>
-            <div className={`w-10 h-px ${stepIndex >= 3 ? "bg-brand-primary" : "bg-brand-border"}`} />
+            <div className={`w-8 h-px ${stepIndex >= 3 ? "bg-[#0F8A63]" : "bg-[#E5EEE8]"}`} />
             {/* Step 3: Payment */}
-            <div className={`flex items-center gap-2 ${stepIndex >= 3 ? "text-brand-primary" : "text-brand-text/40"}`}>
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                stepIndex === 3 ? "bg-brand-primary text-white" : "border-2 border-brand-border"
-              }`}>3</span>
+            <div className={`flex items-center gap-2 ${stepIndex >= 3 ? "text-[#0F8A63]" : "text-brand-text-muted"}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${stepIndex === 3 ? "bg-[#0F8A63] text-white" : "border border-[#E5EEE8]"
+                }`}>3</span>
               Payment
             </div>
           </div>
-          <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
-            <Lock className="w-4 h-4" /> Secure
+          <div className="flex items-center gap-1.5 text-[#0F8A63] text-xs font-bold uppercase tracking-wider">
+            <Lock className="w-3.5 h-3.5" /> 256-Bit Encrypted
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto w-full px-4 py-8 md:py-12 flex flex-col md:flex-row gap-8 lg:gap-12">
+      <div className="max-w-5xl mx-auto w-full px-4 py-8 md:py-12 flex flex-col md:flex-row gap-8 lg:gap-10">
 
         {/* Left: Form Steps */}
         <div className="flex-1 flex flex-col gap-6">
 
           {step === "details" && (
-            <div className="bg-white rounded-2xl border border-brand-border/50 p-6 md:p-8 shadow-sm">
-              <h2 className="text-xl font-bold font-heading text-brand-primary mb-6">Delivery Details</h2>
+            <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] p-6 sm:p-8 shadow-xs">
+              <h2 className="text-xl sm:text-2xl font-black font-heading text-brand-dark mb-6 tracking-tight">Delivery Details</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField label="First Name" value={deliveryDetails.firstName} onChange={(v) => updateField("firstName", v)} error={errors.firstName} placeholder="Rahul" />
-                <FormField label="Last Name" value={deliveryDetails.lastName} onChange={(v) => updateField("lastName", v)} error={errors.lastName} placeholder="Sharma" />
-                <FormField label="Email" type="email" value={deliveryDetails.email} onChange={(v) => updateField("email", v)} error={errors.email} placeholder="rahul@example.com" />
-                <FormField label="Phone" type="tel" value={deliveryDetails.phone} onChange={(v) => updateField("phone", v)} error={errors.phone} placeholder="9876543210" />
+                <FormField label="First Name" value={deliveryDetails.firstName} onChange={(v) => updateField("firstName", v)} error={errors.firstName} />
+                <FormField label="Last Name" value={deliveryDetails.lastName} onChange={(v) => updateField("lastName", v)} error={errors.lastName} />
+                <FormField label="Email" type="email" value={deliveryDetails.email} onChange={(v) => updateField("email", v)} error={errors.email} />
+                <FormField label="Phone" type="tel" value={deliveryDetails.phone} onChange={(v) => updateField("phone", v)} error={errors.phone} />
                 <div className="sm:col-span-2">
-                  <FormField label="Delivery Address" value={deliveryDetails.address} onChange={(v) => updateField("address", v)} error={errors.address} placeholder="House no., Street, Locality" />
+                  <FormField label="Delivery Address" value={deliveryDetails.address} onChange={(v) => updateField("address", v)} error={errors.address} />
                 </div>
-                <FormField label="City" value={deliveryDetails.city} onChange={(v) => updateField("city", v)} placeholder="Gwalior" />
-                <FormField label="State" value={deliveryDetails.state} onChange={(v) => updateField("state", v)} placeholder="Madhya Pradesh" />
-                <FormField label="Pincode" value={deliveryDetails.pincode} onChange={(v) => updateField("pincode", v)} error={errors.pincode} placeholder="474005" />
+                <FormField label="City" value={deliveryDetails.city} onChange={(v) => updateField("city", v)} />
+                <FormField label="State" value={deliveryDetails.state} onChange={(v) => updateField("state", v)} />
+                <FormField label="Pincode" value={deliveryDetails.pincode} onChange={(v) => updateField("pincode", v)} error={errors.pincode} />
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-brand-text/70 mb-1.5 uppercase tracking-wider">Delivery Notes (Optional)</label>
+                  <label className="block text-xs font-bold text-brand-dark mb-1.5 uppercase tracking-wider">Delivery Notes (Optional)</label>
                   <textarea
                     value={deliveryDetails.notes}
                     onChange={(e) => updateField("notes", e.target.value)}
-                    placeholder="Any special instructions for delivery..."
+                    placeholder="Any special instructions for delivery (optional)..."
                     rows={3}
-                    className="w-full border border-brand-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-colors resize-none"
+                    className="w-full border border-[#E5EEE8] rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] transition-colors resize-none text-brand-text placeholder:text-brand-text-muted"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-brand-border/50">
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-[#E5EEE8]">
                 <Link href="/cart">
                   <Button variant="ghost" size="md" icon={<ChevronLeft className="w-4 h-4" />}>Back to Cart</Button>
                 </Link>
-                <Button variant="solid" size="lg" className="flex-1 font-bold" onClick={handleProceedToPayment}>
+                <Button variant="solid" size="lg" className="flex-1 font-heading font-black text-xs uppercase tracking-wider py-3.5 shadow-sm" onClick={handleProceedToPayment}>
                   Continue to Payment <ChevronRight className="w-4 h-4 ml-1 inline-block" />
                 </Button>
               </div>
@@ -201,16 +200,16 @@ export default function CheckoutPage() {
           )}
 
           {step === "payment" && (
-            <div className="bg-white rounded-2xl border border-brand-border/50 p-6 md:p-8 shadow-sm">
-              <h2 className="text-xl font-bold font-heading text-brand-primary mb-2">Payment Method</h2>
-              <p className="text-sm text-brand-text/60 mb-6">Choose your preferred payment method.</p>
+            <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] p-6 sm:p-8 shadow-xs">
+              <h2 className="text-xl sm:text-2xl font-black font-heading text-brand-dark mb-2 tracking-tight">Payment Method</h2>
+              <p className="text-xs sm:text-sm text-brand-text-muted mb-6 font-medium">Select your preferred payment method for wholesale or retail order.</p>
 
               <div className="flex flex-col gap-3">
                 <PaymentOption
                   id="pay-later"
                   icon={<Building2 className="w-5 h-5" />}
-                  title="Pay Later (Credit Account)"
-                  description="For approved trade customers. Pay within 30 days."
+                  title="Pay Later (Trade Credit Account)"
+                  description="For approved retail partners & contractors. 30-day billing cycle."
                   badge="Trade Only"
                   selected={paymentMethod === "pay-later"}
                   onSelect={() => setPaymentMethod("pay-later")}
@@ -218,57 +217,61 @@ export default function CheckoutPage() {
                 <PaymentOption
                   id="bank-transfer"
                   icon={<Banknote className="w-5 h-5" />}
-                  title="Bank Transfer (NEFT/RTGS/IMPS)"
-                  description="Transfer directly to our bank account. Ideal for high-value orders."
+                  title="Direct Bank Transfer (NEFT / RTGS / IMPS)"
+                  description="Transfer directly to KSTC current account. Recommended for bulk orders."
                   selected={paymentMethod === "bank-transfer"}
                   onSelect={() => setPaymentMethod("bank-transfer")}
                 />
                 <PaymentOption
                   id="razorpay"
                   icon={<CreditCard className="w-5 h-5" />}
-                  title="Pay Online (Razorpay)"
-                  description="Credit/Debit card, UPI, Net Banking, Wallets."
+                  title="Online Payment (UPI, Cards, NetBanking)"
+                  description="Instant secure online checkout via Razorpay gateway."
                   selected={paymentMethod === "razorpay"}
                   onSelect={() => setPaymentMethod("razorpay")}
                 />
                 <PaymentOption
                   id="cod"
                   icon={<Wallet className="w-5 h-5" />}
-                  title="Cash on Delivery / Pickup"
-                  description="Pay in cash when you receive or pick up the order."
+                  title="Cash on Delivery / Warehouse Pickup"
+                  description="Pay in cash upon physical delivery or store pickup in Maharajpura, Gwalior."
                   selected={paymentMethod === "cod"}
                   onSelect={() => setPaymentMethod("cod")}
                 />
               </div>
 
               {/* Delivery Summary */}
-              <div className="mt-8 p-4 bg-brand-background/50 rounded-xl border border-brand-border/50">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" />
+              <div className="mt-8 p-5 bg-[#FAF8F2] rounded-2xl border border-[#E5EEE8]">
+                <div className="flex items-start gap-3.5">
+                  <MapPin className="w-5 h-5 text-[#0F8A63] shrink-0 mt-0.5" />
                   <div>
-                    <div className="text-xs font-bold text-brand-text/50 uppercase tracking-wider mb-1">Delivering To</div>
-                    <div className="text-sm font-semibold text-brand-primary">
+                    <div className="text-[10px] font-bold text-[#0F8A63] uppercase tracking-widest mb-1">Delivering To</div>
+                    <div className="text-sm font-heading font-bold text-brand-dark">
                       {deliveryDetails.firstName} {deliveryDetails.lastName}
                     </div>
-                    <div className="text-xs text-brand-text/70 mt-0.5">
+                    <div className="text-xs text-brand-text-muted mt-0.5">
                       {deliveryDetails.address}, {deliveryDetails.city}, {deliveryDetails.state} - {deliveryDetails.pincode}
                     </div>
-                    <div className="text-xs text-brand-text/70 mt-0.5">
+                    <div className="text-xs text-brand-text-muted mt-0.5">
                       {deliveryDetails.phone} &middot; {deliveryDetails.email}
                     </div>
-                    <button onClick={() => setStep("details")} className="text-xs font-semibold text-brand-accent hover:underline mt-2 inline-block">
+                    <button
+                      type="button"
+                      onClick={() => setStep("details")}
+                      className="text-xs font-bold text-[#0F8A63] hover:text-[#0B7453] uppercase tracking-wider mt-2.5 inline-block cursor-pointer"
+                    >
                       Change Address
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-brand-border/50">
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-[#E5EEE8]">
                 <Button variant="ghost" size="md" icon={<ChevronLeft className="w-4 h-4" />} onClick={() => setStep("details")}>
                   Back to Details
                 </Button>
-                <Button variant="accent" size="lg" className="flex-1 font-bold text-base shadow-lg" onClick={handlePlaceOrder}>
-                  Place Order &middot; {formatPrice(total)}
+                <Button variant="solid" size="lg" className="flex-1 font-heading font-black text-xs uppercase tracking-wider py-3.5 shadow-sm hover:shadow-md" onClick={handlePlaceOrder}>
+                  Confirm Order &middot; {formatPrice(total)}
                 </Button>
               </div>
             </div>
@@ -277,51 +280,51 @@ export default function CheckoutPage() {
 
         {/* Right: Order Summary (Glass) */}
         <div className="w-full md:w-80 lg:w-96 shrink-0">
-          <div className="glass-panel rounded-2xl p-6 sticky top-24 border border-white/60 shadow-lg">
-            <h3 className="font-heading font-bold text-brand-primary text-lg mb-4">Order Summary</h3>
+          <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-7 sticky top-20 border border-[#E5EEE8] shadow-xs">
+            <h3 className="font-heading font-black text-brand-dark text-base uppercase tracking-wider mb-4">Order Summary</h3>
 
             {/* Item List */}
-            <div className="space-y-3 mb-4 pb-4 border-b border-brand-border/40 max-h-48 overflow-y-auto">
+            <div className="space-y-3 mb-4 pb-4 border-b border-[#E5EEE8] max-h-48 overflow-y-auto">
               {items.map((item) => {
                 const price = item.isTradeUser && item.bulkPrice ? item.bulkPrice : item.unitPrice;
                 return (
-                  <div key={item.id} className="flex justify-between text-sm">
+                  <div key={item.id} className="flex justify-between text-xs sm:text-sm">
                     <div className="flex-1 min-w-0 mr-2">
-                      <div className="text-brand-primary font-medium truncate">{item.title}</div>
-                      <div className="text-[10px] text-brand-text/50">Qty: {item.quantity}</div>
+                      <div className="text-brand-dark font-bold truncate">{item.title}</div>
+                      <div className="text-[10px] text-brand-text-muted font-medium">Qty: {item.quantity}</div>
                     </div>
-                    <span className="font-semibold text-brand-primary whitespace-nowrap">{formatPrice(price * item.quantity)}</span>
+                    <span className="font-heading font-bold text-brand-dark whitespace-nowrap">{formatPrice(price * item.quantity)}</span>
                   </div>
                 );
               })}
             </div>
 
-            <div className="space-y-3 text-sm mb-6 pb-6 border-b border-brand-border/40">
-              <div className="flex justify-between text-brand-text/80">
+            <div className="space-y-3 text-xs sm:text-sm mb-5 pb-5 border-b border-[#E5EEE8]">
+              <div className="flex justify-between text-brand-text font-medium">
                 <span>Subtotal ({totalItems} {totalItems === 1 ? "item" : "items"})</span>
-                <span className="font-semibold text-brand-primary">{formatPrice(subtotal)}</span>
+                <span className="font-bold text-brand-dark">{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-brand-text/80">
+              <div className="flex justify-between text-brand-text font-medium">
                 <span>GST (18%)</span>
-                <span className="font-semibold text-brand-primary">{formatPrice(gst)}</span>
+                <span className="font-bold text-brand-dark">{formatPrice(gst)}</span>
               </div>
-              <div className="flex justify-between text-brand-text/80">
-                <span>Local Delivery</span>
-                <span className="font-semibold text-green-600">Free</span>
+              <div className="flex justify-between text-brand-text font-medium">
+                <span>Local Gwalior Delivery</span>
+                <span className="font-bold text-[#0F8A63] uppercase text-xs">Free</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="font-bold text-brand-primary">Total</span>
-              <span className="font-bold text-2xl text-brand-primary">{formatPrice(total)}</span>
+            <div className="flex justify-between items-center mb-6">
+              <span className="font-heading font-black text-sm uppercase tracking-wider text-brand-dark">Total</span>
+              <span className="font-heading font-black text-2xl text-[#0F8A63]">{formatPrice(total)}</span>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-xs text-brand-text/60">
-                <CheckCircle2 className="w-4 h-4 text-green-500" /> Authorized Distributor Guarantee
+            <div className="pt-4 border-t border-[#E5EEE8] flex flex-col gap-2.5">
+              <div className="flex items-center gap-2 text-xs text-brand-text-muted font-medium">
+                <CheckCircle2 className="w-4 h-4 text-[#0F8A63] shrink-0" /> Authorized Wholesale Distributor Guarantee
               </div>
-              <div className="flex items-center gap-2 text-xs text-brand-text/60">
-                <CheckCircle2 className="w-4 h-4 text-green-500" /> Easy Returns within 7 days
+              <div className="flex items-center gap-2 text-xs text-brand-text-muted font-medium">
+                <CheckCircle2 className="w-4 h-4 text-[#0F8A63] shrink-0" /> Invoice & E-Way Bill Generated
               </div>
             </div>
           </div>
@@ -341,19 +344,18 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-brand-text/70 mb-1.5 uppercase tracking-wider">{label}</label>
+      <label className="block text-xs font-bold text-brand-dark mb-1.5 uppercase tracking-wider">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 transition-colors ${
-          error
+        className={`w-full border rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 transition-colors text-brand-text placeholder:text-brand-text-muted ${error
             ? "border-red-400 focus:ring-red-400/50 focus:border-red-400 bg-red-50/50"
-            : "border-brand-border focus:ring-brand-accent/50 focus:border-brand-accent"
-        }`}
+            : "border-[#E5EEE8] focus:ring-[#0F8A63]/30 focus:border-[#0F8A63]"
+          }`}
       />
-      {error && <p className="text-xs text-red-500 mt-1 font-medium">{error}</p>}
+      {error && <p className="text-xs text-red-600 mt-1 font-bold">{error}</p>}
     </div>
   );
 }
@@ -366,29 +368,29 @@ function PaymentOption({
 }) {
   return (
     <button
+      id={`payment-option-${id}`}
+      type="button"
       onClick={onSelect}
-      className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${
-        selected
-          ? "border-brand-accent bg-brand-accent/5 shadow-sm"
-          : "border-brand-border hover:border-brand-accent/40 bg-white"
-      }`}
+      className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all flex items-start gap-4 cursor-pointer ${selected
+          ? "border-[#0F8A63] bg-[#DCF5E9]/40 shadow-xs"
+          : "border-[#E5EEE8] hover:border-[#0F8A63]/40 bg-white"
+        }`}
     >
-      <div className={`p-2.5 rounded-lg shrink-0 ${selected ? "bg-brand-accent text-white" : "bg-brand-background text-brand-text/60"}`}>
+      <div className={`p-2.5 rounded-xl shrink-0 ${selected ? "bg-[#0F8A63] text-white" : "bg-[#DCF5E9] text-[#0F8A63] border border-[#E5EEE8]"}`}>
         {icon}
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-brand-primary">{title}</span>
+          <span className="font-heading font-bold text-sm text-brand-dark">{title}</span>
           {badge && (
-            <span className="text-[10px] font-bold bg-green-50 text-green-700 px-2 py-0.5 rounded uppercase tracking-wider">{badge}</span>
+            <span className="text-[9px] font-bold bg-[#DCF5E9] border border-[#E5EEE8] text-[#0F8A63] px-2 py-0.5 rounded uppercase tracking-wider">{badge}</span>
           )}
         </div>
-        <p className="text-xs text-brand-text/60 mt-0.5">{description}</p>
+        <p className="text-xs text-brand-text-muted mt-1 leading-relaxed">{description}</p>
       </div>
-      <div className={`w-5 h-5 rounded-full border-2 shrink-0 mt-1 flex items-center justify-center ${
-        selected ? "border-brand-accent" : "border-brand-border"
-      }`}>
-        {selected && <div className="w-2.5 h-2.5 rounded-full bg-brand-accent" />}
+      <div className={`w-5 h-5 rounded-full border-2 shrink-0 mt-1 flex items-center justify-center ${selected ? "border-[#0F8A63]" : "border-[#E5EEE8]"
+        }`}>
+        {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#0F8A63]" />}
       </div>
     </button>
   );

@@ -1,74 +1,78 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-background pt-16 pb-8 border-t border-brand-border/50 mt-20">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+    <footer className="bg-[#18231F] text-white pt-16 pb-8 border-t-2 border-[#0F8A63] mt-20 relative overflow-hidden">
+      {/* Decorative ambient glow */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#0F8A63]/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+      <div className="absolute bottom-0 right-10 w-80 h-80 bg-[#0F8A63]/5 rounded-full blur-3xl pointer-events-none translate-y-1/3" />
+
+      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.35fr_0.9fr_0.9fr_1.1fr] gap-8 lg:gap-10 mb-12">
 
           {/* Brand Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="relative w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden p-1">
-                <Image src="/kstc-logo.png" alt="KSTC Logo" fill className="object-contain" />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden p-1 border border-white/20 transition-transform group-hover:scale-105 shrink-0">
+                <Image src="/kstc-logo.png" alt="Khatu Shyam Trading Co. Logo" fill className="object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-bold text-brand-primary leading-tight text-lg">Khatu Shyam</span>
-                <span className="text-[10px] text-brand-text/60 uppercase tracking-widest font-semibold">Trading Co.</span>
+                <span className="font-heading font-black text-white leading-tight text-base sm:text-lg tracking-tight whitespace-nowrap">Khatu Shyam Trading Co.</span>
+                <span className="text-[10px] sm:text-[11px] text-[#DCF5E9] uppercase tracking-wider font-semibold whitespace-nowrap">Authorized Wholesale Distributor</span>
               </div>
             </Link>
-            <p className="text-sm text-brand-text/70 leading-relaxed max-w-xs mt-4">
-              Authorized distributor for Sentini Flopipes and Johnson's Pedders serving retail and trade customers in the Gwalior & Chambal region.
+            <p className="text-xs sm:text-sm text-white/80 leading-relaxed max-w-sm mt-3">
+              Authorized wholesale distributor for Sentini Flopipes and Johnson&apos;s Pedders serving retail and trade customers in the Gwalior & Chambal region.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-heading font-semibold text-brand-primary mb-6">Categories</h4>
-            <ul className="space-y-3">
+            <h4 className="font-heading font-black text-white text-xs uppercase tracking-widest mb-5">Categories</h4>
+            <ul className="space-y-2.5">
               <FooterLink href="/category/bathroom-ware">Bathroom Ware</FooterLink>
               <FooterLink href="/category/sanitary-ware">Sanitary Ware</FooterLink>
               <FooterLink href="/category/pipes-fittings">Pipes & Fittings</FooterLink>
-              <FooterLink href="/brands">All Brands</FooterLink>
+              <FooterLink href="/category/all-products">All Products</FooterLink>
             </ul>
           </div>
 
           {/* Trade & Support */}
           <div>
-            <h4 className="font-heading font-semibold text-brand-primary mb-6">Support Center</h4>
-            <ul className="space-y-3">
-              <FooterLink href="/shop">Shop Accounts</FooterLink>
-              <FooterLink href="/faqs">FAQs</FooterLink>
-              <FooterLink href="/support">Help Center</FooterLink>
+            <h4 className="font-heading font-black text-white text-xs uppercase tracking-widest mb-5">Support Center</h4>
+            <ul className="space-y-2.5">
+              <FooterLink href="/login">Trade Account</FooterLink>
+              <FooterLink href="/contact-us">Showroom Desk</FooterLink>
+              <FooterLink href="/cart">My Cart</FooterLink>
               <FooterLink href="/contact-us">Contact Us</FooterLink>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-heading font-semibold text-brand-primary mb-6">Contact</h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-sm text-brand-text/70">
-                <MapPin className="w-6 h-6 text-brand-accent shrink-0" />
-                <a href="https://maps.app.goo.gl/HMytKeSHLpnLAgAp7" target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary hover:underline transition-colors">
-                  Radhapuram, Vaibhav Enclave, Maharajpura, Gwalior-474005, Madhya Pradesh, India
+            <h4 className="font-heading font-black text-white text-xs uppercase tracking-widest mb-5">Contact</h4>
+            <ul className="space-y-3.5">
+              <li className="flex items-start gap-3 text-xs sm:text-sm text-white/80">
+                <MapPin className="w-5 h-5 text-[#0F8A63] shrink-0 mt-0.5" />
+                <a href="https://maps.app.goo.gl/HMytKeSHLpnLAgAp7" target="_blank" rel="noopener noreferrer" className="hover:text-[#DCF5E9] hover:underline transition-colors leading-relaxed">
+                  Vaibhav Enclave, Shubhanjalipuram, Radhapuram, Maharajpura, Gwalior, Madhya Pradesh, 474005
                 </a>
               </li>
-              <li className="flex items-center gap-3 text-sm text-brand-text/70">
-                <Phone className="w-5 h-5 text-brand-accent shrink-0" />
-                <a href="tel:+919340486840" className="hover:text-brand-primary transition-colors">+91 93404 86840</a>
+              <li className="flex items-center gap-3 text-xs sm:text-sm text-white/80">
+                <Phone className="w-4 h-4 text-[#0F8A63] shrink-0" />
+                <a href="tel:+919340486840" className="hover:text-[#DCF5E9] transition-colors font-medium">+91 93404 86840</a>
               </li>
-              <li className="flex items-center gap-3 text-sm text-brand-text/70">
-                <Mail className="w-5 h-5 text-brand-accent shrink-0" />
-                <a href="mailto:kstradingco88@gmail.com" className="hover:text-brand-primary transition-colors">kstradingco88@gmail.com</a>
+              <li className="flex items-center gap-3 text-xs sm:text-sm text-white/80">
+                <Mail className="w-4 h-4 text-[#0F8A63] shrink-0" />
+                <a href="mailto:kstradingco88@gmail.com" className="hover:text-[#DCF5E9] transition-colors">kstradingco88@gmail.com</a>
               </li>
-              <li className="flex items-center gap-3 text-sm text-brand-text/70">
-                <div className="flex gap-5 items-center mt-1">
-                  <SocialIcon href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." icon={<WhatsApp className="w-5 h-5" />} label="WhatsApp" />
-                  <SocialIcon href="#" icon={<Facebook className="w-5 h-5" />} label="Facebook" />
-                  <SocialIcon href="https://www.instagram.com/khatushyamtradingco" icon={<Instagram className="w-5 h-5" />} label="Instagram" />
+              <li className="pt-2">
+                <div className="flex gap-3 items-center">
+                  <SocialIcon href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." icon={<WhatsApp className="w-4 h-4" />} label="WhatsApp" />
+                  <SocialIcon href="#" icon={<Facebook className="w-4 h-4" />} label="Facebook" />
+                  <SocialIcon href="https://www.instagram.com/khatushyamtradingco" icon={<Instagram className="w-4 h-4" />} label="Instagram" />
                 </div>
               </li>
             </ul>
@@ -76,15 +80,14 @@ export default function Footer() {
 
         </div>
 
-
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-brand-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-brand-text/60">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/70">
             © {new Date().getFullYear()} Khatu Shyam Trading Co. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-xs text-brand-text/60 hover:text-brand-primary transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-xs text-brand-text/60 hover:text-brand-primary transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="text-xs text-white/70 hover:text-[#DCF5E9] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-white/70 hover:text-[#DCF5E9] transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
@@ -94,7 +97,14 @@ export default function Footer() {
 
 function SocialIcon({ href, label, icon }: { href: string; label: string; icon?: React.ReactNode }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-brand-text/50 hover:text-brand-primary transition-colors" title={label}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2.5 rounded-xl bg-white/10 hover:bg-[#0F8A63] text-white border border-white/10 hover:border-[#0F8A63] transition-all duration-200 flex items-center justify-center shadow-xs"
+      title={label}
+      aria-label={label}
+    >
       {icon ? icon : label.charAt(0)}
     </a>
   );
@@ -103,7 +113,7 @@ function SocialIcon({ href, label, icon }: { href: string; label: string; icon?:
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="text-sm text-brand-text/70 hover:text-brand-primary transition-colors">
+      <Link href={href} className="text-xs sm:text-sm text-white/80 hover:text-[#DCF5E9] transition-all duration-150 inline-block hover:translate-x-0.5">
         {children}
       </Link>
     </li>

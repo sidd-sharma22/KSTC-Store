@@ -8,14 +8,16 @@ export default function ContactUsPage() {
 
       {/* Page Header */}
       <div className="max-w-7xl mx-auto w-full px-4 pt-8 pb-6 md:px-8">
-        <div className="text-[10px] font-bold text-brand-text/50 uppercase tracking-widest mb-2">
-          <Link href="/" className="hover:text-brand-primary transition-colors">Home</Link> / Contact Us
+        <div className="text-[11px] font-bold text-brand-text-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
+          <Link href="/" className="hover:text-brand-primary transition-colors">Home</Link>
+          <span>/</span>
+          <span className="text-[#0F8A63] font-black">Contact Us</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-brand-primary font-heading">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-brand-dark font-heading tracking-tight">
           Contact Us
         </h1>
-        <p className="text-sm text-brand-text/70 mt-2 max-w-xl">
-          Get in touch with us for inquiries, support, or to visit our showroom in Gwalior.
+        <p className="text-xs sm:text-sm text-brand-text-muted mt-2 max-w-xl font-medium">
+          Get in touch with our commercial sales desk, technical assistance, or visit our wholesale warehouse showroom in Maharajpura, Gwalior.
         </p>
       </div>
 
@@ -25,33 +27,35 @@ export default function ContactUsPage() {
         <div className="flex-1 flex flex-col gap-8">
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl border border-brand-border/50 p-6 md:p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-brand-primary mb-6 font-heading">Send us a Message</h2>
-            <form className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-brand-text">Name</label>
-                  <input type="text" id="name" className="w-full px-4 py-2.5 bg-gray-50 border border-brand-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-sm transition-all" placeholder="Your Name" />
+          <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] p-6 md:p-8 shadow-xs">
+            <h2 className="text-xl sm:text-2xl font-black text-brand-dark mb-6 font-heading tracking-tight">Send us a Message</h2>
+            <form className="space-y-4 sm:space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                <div className="space-y-1.5">
+                  <label htmlFor="name" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Your Name</label>
+                  <input type="text" id="name" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="Enter your full name" />
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium text-brand-text">Email</label>
-                  <input type="email" id="email" className="w-full px-4 py-2.5 bg-gray-50 border border-brand-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-sm transition-all" placeholder="your@email.com" />
+                <div className="space-y-1.5">
+                  <label htmlFor="email" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Email Address</label>
+                  <input type="email" id="email" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="you@company.com" />
                 </div>
               </div>
-              <div className="space-y-2">
-                <label htmlFor="phone" className="text-sm font-medium text-brand-text">Phone (Optional)</label>
-                <input type="tel" id="phone" className="w-full px-4 py-2.5 bg-gray-50 border border-brand-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-sm transition-all" placeholder="Your Phone Number" />
+              <div className="space-y-1.5">
+                <label htmlFor="phone" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Contact Phone</label>
+                <input type="tel" id="phone" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="10-digit mobile number" />
               </div>
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-brand-text">Message</label>
-                <textarea id="message" rows={4} className="w-full px-4 py-2.5 bg-gray-50 border border-brand-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-accent/50 text-sm transition-all resize-y" placeholder="How can we help you?"></textarea>
+              <div className="space-y-1.5">
+                <label htmlFor="message" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Message or Product Inquiries</label>
+                <textarea id="message" rows={4} className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all resize-y" placeholder="Describe the pipe sizes, quantities, or sanitary items required..."></textarea>
               </div>
-              <Button type="button" variant="solid" className="w-full md:w-auto">Send Message</Button>
+              <Button type="button" variant="solid" className="w-full md:w-auto font-heading font-black text-xs uppercase tracking-wider px-8 py-3 shadow-sm">
+                Send Message
+              </Button>
             </form>
           </div>
 
           {/* Map */}
-          <div className="rounded-2xl overflow-hidden border border-brand-border/50 shadow-sm bg-white min-h-[400px]">
+          <div className="rounded-3xl overflow-hidden border border-[#E5EEE8] shadow-xs bg-white min-h-[400px]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3287.0145320883375!2d78.22335264366733!3d26.26678713027006!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3976c77cbcb628c1%3A0x5d89e0ad2bd0301a!2sKhatu%20Shyam%20Trading%20Co.!5e0!3m2!1sen!2sin!4v1782819374303!5m2!1sen!2sin"
               width="100%"
@@ -66,64 +70,63 @@ export default function ContactUsPage() {
         </div>
 
         {/* Right: Store Details */}
-        <div className="w-full lg:w-96 shrink-0 flex flex-col gap-6">
+        <div className="w-full lg:w-96 shrink-0 flex flex-col gap-5">
 
           {/* Address Card */}
-          <div className="bg-white rounded-2xl border border-brand-border/50 p-6 shadow-sm">
-            <h3 className="font-heading font-semibold text-brand-primary text-lg mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-brand-accent" /> Our Address
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-[#E5EEE8] p-6 shadow-xs">
+            <h3 className="font-heading font-black text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-[#0F8A63]" /> Our Warehouse
             </h3>
-            <p className="text-sm text-brand-text/80 leading-relaxed mb-4">
-              Radhapuram, Vaibhav Enclave, Maharajpura, Gwalior-474005, Madhya Pradesh, India
+            <p className="text-xs sm:text-sm text-brand-text-muted leading-relaxed mb-4">
+              Vaibhav Enclave, Shubhanjalipuram, Radhapuram, Maharajpura, Gwalior, Madhya Pradesh, 474005
             </p>
             <a
               href="https://maps.app.goo.gl/HMytKeSHLpnLAgAp7"
               target="_blank"
               rel="noopener noreferrer"
+              className="block"
             >
-              <Button variant="accent" size="sm" icon={<Navigation className="w-4 h-4" />} className="w-full">
+              <Button variant="accent" size="sm" icon={<Navigation className="w-3.5 h-3.5" />} className="w-full font-heading font-black text-xs uppercase tracking-wider">
                 Get Directions
               </Button>
             </a>
           </div>
 
           {/* Hours Card */}
-          <div className="bg-white rounded-2xl border border-brand-border/50 p-6 shadow-sm">
-            <h3 className="font-heading font-semibold text-brand-primary text-lg mb-4 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-brand-accent" /> Store Hours
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-[#E5EEE8] p-6 shadow-xs">
+            <h3 className="font-heading font-black text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-[#0F8A63]" /> Operating Hours
             </h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-brand-text/80">
-                <span>Monday - Sunday</span>
-                <span className="font-semibold text-brand-primary">10:00 AM - 05:00 PM</span>
+            <div className="space-y-2 text-xs sm:text-sm">
+              <div className="flex justify-between text-brand-text">
+                <span className="font-medium text-brand-text-muted">Monday – Saturday</span>
+                <span className="font-bold text-brand-dark">10:00 AM – 05:00 PM</span>
               </div>
             </div>
           </div>
 
           {/* Contact Card */}
-          <div className="bg-white rounded-2xl border border-brand-border/50 p-6 shadow-sm">
-            <h3 className="font-heading font-semibold text-brand-primary text-lg mb-4 flex items-center gap-2">
-              <Phone className="w-5 h-5 text-brand-accent" /> Contact
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-[#E5EEE8] p-6 shadow-xs">
+            <h3 className="font-heading font-black text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+              <Phone className="w-4 h-4 text-[#0F8A63]" /> Phone & WhatsApp
             </h3>
-            <div className="space-y-3 text-sm text-brand-text/80">
-              <p><span className="font-semibold text-brand-primary">Phone:</span> <a href="tel:+919340486840">+91 93404 86840</a></p>
-              <p><span className="font-semibold text-brand-primary">Alternate Phone:</span> <a href="tel:+919074912742">+91 90749 12742</a></p>
-              <p><span className="font-semibold text-brand-primary">Email:</span> <a href="mailto:kstradingco88@gmail.com">kstradingco88@gmail.com</a></p>
-              <p><span className="font-semibold text-brand-primary">WhatsApp:</span> <a href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." target="_blank" rel="noopener noreferrer">+91 93404 86840</a></p>
+            <div className="space-y-2.5 text-xs sm:text-sm text-brand-text">
+              <p><span className="font-bold text-brand-dark">Primary Phone:</span> <a href="tel:+919340486840" className="hover:text-[#0F8A63] transition-colors font-medium">+91 93404 86840</a></p>
+              <p><span className="font-bold text-brand-dark">Alternate Phone:</span> <a href="tel:+919074912742" className="hover:text-[#0F8A63] transition-colors font-medium">+91 90749 12742</a></p>
+              <p><span className="font-bold text-brand-dark">Official Email:</span> <a href="mailto:kstradingco88@gmail.com" className="hover:text-[#0F8A63] transition-colors font-medium">kstradingco88@gmail.com</a></p>
+              <p><span className="font-bold text-brand-dark">WhatsApp Desk:</span> <a href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." target="_blank" rel="noopener noreferrer" className="hover:text-[#0F8A63] transition-colors font-medium">+91 93404 86840</a></p>
             </div>
           </div>
 
           {/* Social Card */}
-          <div className="bg-white rounded-2xl border border-brand-border/50 p-6 shadow-sm">
-            <h3 className="font-heading font-semibold text-brand-primary text-lg mb-4 flex items-center gap-2">
-              <Globe className="w-5 h-5 text-brand-accent" /> Social Media
+          <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-[#E5EEE8] p-6 shadow-xs">
+            <h3 className="font-heading font-black text-brand-dark text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+              <Globe className="w-4 h-4 text-[#0F8A63]" /> Connect Online
             </h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex gap-5 items-center mt-1">
-                <SocialIcon href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." icon={<WhatsApp className="w-5 h-5" />} label="WhatsApp" />
-                <SocialIcon href="#" icon={<Facebook className="w-5 h-5" />} label="Facebook" />
-                <SocialIcon href="https://www.instagram.com/khatushyamtradingco" icon={<Instagram className="w-5 h-5" />} label="Instagram" />
-              </div>
+            <div className="flex gap-3 items-center mt-2">
+              <SocialIcon href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal." icon={<WhatsApp className="w-4 h-4" />} label="WhatsApp" />
+              <SocialIcon href="#" icon={<Facebook className="w-4 h-4" />} label="Facebook" />
+              <SocialIcon href="https://www.instagram.com/khatushyamtradingco" icon={<Instagram className="w-4 h-4" />} label="Instagram" />
             </div>
           </div>
 
@@ -135,7 +138,14 @@ export default function ContactUsPage() {
 
 function SocialIcon({ href, label, icon }: { href: string; label: string; icon?: React.ReactNode }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-brand-text/50 hover:text-brand-primary transition-colors" title={label}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2.5 rounded-xl bg-[#DCF5E9] border border-[#E5EEE8] text-[#0F8A63] hover:bg-[#0F8A63] hover:text-white transition-all flex items-center justify-center shadow-2xs"
+      title={label}
+      aria-label={label}
+    >
       {icon ? icon : label.charAt(0)}
     </a>
   );
@@ -160,3 +170,4 @@ function WhatsApp(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+

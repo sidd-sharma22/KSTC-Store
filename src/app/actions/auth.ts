@@ -120,7 +120,7 @@ export async function sendOtpAction(params: SendOtpParams): Promise<AuthActionRe
       devMode: emailResult.devMode,
       devOtp: emailResult.devOtp,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("sendOtpAction error:", error);
     return {
       success: false,
@@ -218,7 +218,7 @@ export async function verifyOtpAction(params: VerifyOtpParams): Promise<AuthActi
       message: params.isSignUp ? "Account created successfully!" : "Signed in successfully!",
       user: sessionPayload,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("verifyOtpAction error:", error);
     return {
       success: false,

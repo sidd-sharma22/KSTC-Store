@@ -23,7 +23,7 @@ const PRODUCTS: Record<string, {
     minTradeQty: 50,
     inStock: true,
     description: "High-quality CPVC pipe designed for hot and cold water distribution systems. Manufactured using premium resins for maximum durability and heat resistance. Conforms to IS 15778.",
-    features: ["Length: 3 Meters", "Standard: SDR 11", "Size: 1/2 inch (15mm)", "Max Operating Temp: 93┬░C", "Lead-free and safe for drinking water"],
+    features: ["Length: 3 Meters", "Standard: SDR 11", "Size: 1/2 inch (15mm)", "Max Operating Temp: 93°C", "Lead-free and safe for drinking water"],
   },
   "2": {
     id: "2",
@@ -63,15 +63,15 @@ const PRODUCTS: Record<string, {
   },
   "5": {
     id: "5",
-    title: "Sentini CPVC Brass Elbow 90┬░",
+    title: "Sentini CPVC Brass Elbow 90°",
     brand: "Sentini Flopipes",
     category: "Pipes & Fittings",
     retailPrice: 89,
     tradePrice: 75,
     minTradeQty: 180,
     inStock: true,
-    description: "CPVC-to-brass transition elbow for secure connections to metal fittings. 90┬░ angle for directional pipe changes.",
-    features: ["Size: 1/2 x 1/2 inch", "Angle: 90┬░", "CPVC to Brass", "IS 15778 Certified", "Hot & Cold Water Compatible"],
+    description: "CPVC-to-brass transition elbow for secure connections to metal fittings. 90° angle for directional pipe changes.",
+    features: ["Size: 1/2 x 1/2 inch", "Angle: 90°", "CPVC to Brass", "IS 15778 Certified", "Hot & Cold Water Compatible"],
   },
   "6": {
     id: "6",
@@ -155,7 +155,7 @@ const PRODUCTS: Record<string, {
     minTradeQty: 5,
     inStock: true,
     description: "Luxury 8-inch round rain shower head with anti-lime nozzles. Chrome finish for a premium look. Ceiling or wall mount compatible.",
-    features: ["Size: 8 inch Round", "Finish: Chrome", "Anti-Lime Nozzles", "Ceiling/Wall Mount", "360┬░ Swivel"],
+    features: ["Size: 8 inch Round", "Finish: Chrome", "Anti-Lime Nozzles", "Ceiling/Wall Mount", "360° Swivel"],
   },
 };
 
@@ -211,91 +211,105 @@ export default function ProductDetailPage() {
       
       {/* Breadcrumbs & Back */}
       <div className="max-w-7xl mx-auto w-full px-4 pt-6 pb-4 md:px-8">
-        <button onClick={() => router.back()} className="inline-flex items-center text-sm font-medium text-brand-text/60 hover:text-brand-primary transition-colors mb-4 md:hidden">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back
+        <button onClick={() => router.back()} className="inline-flex items-center text-xs font-bold text-brand-text-muted hover:text-brand-primary transition-colors mb-4 md:hidden uppercase tracking-wider">
+          <ArrowLeft className="w-4 h-4 mr-1.5" /> Back
         </button>
-        <div className="hidden md:flex items-center gap-2 text-xs font-medium text-brand-text/50 uppercase tracking-wider">
+        <div className="hidden md:flex items-center gap-2 text-xs font-bold text-brand-text-muted uppercase tracking-wider">
           <Link href="/" className="hover:text-brand-primary transition-colors">Home</Link>
-          <ChevronRight className="w-3 h-3" />
+          <ChevronRight className="w-3 h-3 text-[#0F8A63]" />
           <Link href="/category/all-products" className="hover:text-brand-primary transition-colors">Shop</Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-brand-primary">{product.title}</span>
+          <ChevronRight className="w-3 h-3 text-[#0F8A63]" />
+          <span className="text-brand-primary font-black">{product.title}</span>
         </div>
       </div>
 
       <main className="max-w-7xl mx-auto w-full px-4 md:px-8">
-        <div className="bg-white rounded-3xl border border-brand-border/50 shadow-sm overflow-hidden flex flex-col lg:flex-row">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] shadow-xs overflow-hidden flex flex-col lg:flex-row">
           
           {/* Left: Image Gallery */}
-          <div className="w-full lg:w-1/2 p-6 lg:p-12 border-b lg:border-b-0 lg:border-r border-brand-border/50 bg-brand-background/30 flex flex-col">
+          <div className="w-full lg:w-5/12 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[#E5EEE8] bg-[#FAF8F2]/60 flex flex-col justify-between">
             <div className="flex justify-between items-start w-full mb-4">
-              <span className="bg-white px-3 py-1 rounded-lg border border-brand-border text-[10px] font-bold text-brand-primary uppercase tracking-wider shadow-sm">
+              <span className="bg-[#DCF5E9] px-3 py-1 rounded-xl border border-[#E5EEE8] text-[10px] font-bold text-[#0F8A63] uppercase tracking-wider shadow-xs">
                 {product.brand}
               </span>
               <div className="flex gap-2">
-                <button className="p-2.5 bg-white rounded-full text-brand-text/50 hover:text-brand-primary border border-brand-border shadow-sm transition-all hover:scale-105">
-                  <Share2 className="w-4 h-4" />
+                <button 
+                  type="button" 
+                  aria-label="Share product"
+                  className="p-2 bg-white rounded-xl text-brand-text-muted hover:text-brand-primary border border-[#E5EEE8] shadow-xs transition-all hover:scale-105 cursor-pointer"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
                 </button>
-                <button className="p-2.5 bg-white rounded-full text-brand-text/50 hover:text-red-500 border border-brand-border shadow-sm transition-all hover:scale-105">
-                  <Heart className="w-4 h-4" />
+                <button 
+                  type="button" 
+                  aria-label="Save to favorites"
+                  className="p-2 bg-white rounded-xl text-brand-text-muted hover:text-red-500 border border-[#E5EEE8] shadow-xs transition-all hover:scale-105 cursor-pointer"
+                >
+                  <Heart className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
             
-            <div className="flex-1 aspect-square w-full flex items-center justify-center relative">
-              <div className="w-3/4 h-3/4 bg-brand-border/20 rounded-2xl flex items-center justify-center border-2 border-dashed border-brand-border/50">
-                <span className="font-heading text-brand-text/40 font-medium">Product Image</span>
+            <div className="w-full py-6 sm:py-8 flex items-center justify-center">
+              <div className="w-52 h-52 sm:w-60 sm:h-60 bg-white/90 backdrop-blur-xs rounded-2xl flex items-center justify-center border-2 border-dashed border-[#E5EEE8] shadow-2xs p-6">
+                <span className="font-heading font-black text-[#0F8A63]/40 uppercase tracking-wider text-xs">Product Image</span>
               </div>
+            </div>
+
+            <div className="text-center text-[11px] font-medium text-brand-text-muted">
+              Authorized Authentic Stock
             </div>
           </div>
 
           {/* Right: Product Details */}
-          <div className="w-full lg:w-1/2 p-6 lg:p-12 flex flex-col">
-            <div className="mb-2 text-sm font-semibold text-brand-accent tracking-widest uppercase">
+          <div className="w-full lg:w-7/12 p-6 lg:p-10 flex flex-col">
+            <div className="mb-2 text-xs font-bold text-[#0F8A63] tracking-widest uppercase">
               {product.category}
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold font-heading text-brand-primary leading-tight mb-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black font-heading text-brand-dark leading-tight mb-4 tracking-tight">
               {product.title}
             </h1>
             
-            <p className="text-brand-text/70 leading-relaxed mb-8">
+            <p className="text-brand-text-muted leading-relaxed mb-6 text-sm sm:text-base font-normal">
               {product.description}
             </p>
 
             {/* Pricing Section */}
-            <div className="bg-brand-background/50 rounded-2xl p-5 border border-brand-border mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-brand-border/80">
+            <div className="bg-[#FAF8F2] rounded-2xl p-5 sm:p-6 border border-[#E5EEE8] mb-6 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-[#E5EEE8]">
                 <div>
-                  <div className="text-xs font-semibold text-brand-text/50 uppercase tracking-wider mb-1">Retail Price (MSRP)</div>
-                  <div className="text-2xl font-bold text-brand-text">{formatPrice(product.retailPrice)} <span className="text-sm font-medium text-brand-text/50">/ unit</span></div>
+                  <div className="text-[11px] font-bold text-brand-text-muted uppercase tracking-wider mb-1">Standard MRP</div>
+                  <div className="text-2xl font-black font-heading text-brand-dark">{formatPrice(product.retailPrice)} <span className="text-xs font-normal text-brand-text-muted">/ unit</span></div>
                 </div>
                 
-                <div className="bg-green-50 rounded-xl p-3 border border-green-200">
+                <div className="bg-[#DCF5E9] rounded-2xl p-3.5 border border-[#E5EEE8]">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <div className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Shop / Trade Price</div>
+                    <div className="w-2 h-2 rounded-full bg-[#0F8A63] animate-pulse" />
+                    <div className="text-[10px] font-bold text-[#0F8A63] uppercase tracking-wider">Bulk Trade Price</div>
                   </div>
-                  <div className="text-2xl font-bold text-green-700">{formatPrice(product.tradePrice)} <span className="text-sm font-medium text-green-600/70">/ unit</span></div>
-                  <div className="text-xs text-green-600/80 font-medium mt-1">Min. order: {product.minTradeQty} units</div>
+                  <div className="text-2xl font-black font-heading text-[#0F8A63]">{formatPrice(product.tradePrice)} <span className="text-xs font-normal text-[#0F8A63]/70">/ unit</span></div>
+                  <div className="text-[11px] text-[#18231F]/80 font-medium mt-1">Min. order: {product.minTradeQty} units</div>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${product.inStock ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                  <span className="text-sm font-medium text-brand-primary">{product.inStock ? 'In Stock & Ready to Ship' : 'Out of Stock'}</span>
+                  <div className={`w-2.5 h-2.5 rounded-full ${product.inStock ? 'bg-[#0F8A63]' : 'bg-red-500'}`} />
+                  <span className="text-xs font-bold text-brand-dark uppercase tracking-wider">{product.inStock ? 'In Stock & Ready to Ship' : 'Out of Stock'}</span>
                 </div>
-                <span className="text-sm text-brand-text/50">SKU: KSTC-{id.padStart(4, '0')}</span>
+                <span className="text-xs font-bold text-brand-text-muted">SKU: KSTC-{id.padStart(4, '0')}</span>
               </div>
             </div>
 
             {/* Quantity & Actions (Desktop) */}
-            <div className="hidden md:flex flex-col gap-4 mb-8">
+            <div className="hidden md:flex flex-col gap-3 mb-8">
               <div className="flex items-center gap-4">
-                <div className="flex items-center border border-brand-border rounded-xl bg-white overflow-hidden h-12">
+                <div className="flex items-center border border-[#E5EEE8] rounded-xl bg-white shadow-xs overflow-hidden h-12">
                   <button 
+                    type="button"
+                    aria-label="Decrease quantity"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                    className="px-4 text-brand-text/50 hover:text-brand-primary hover:bg-brand-background transition-colors h-full"
+                    className="px-4 text-brand-text-muted hover:text-brand-primary hover:bg-[#DCF5E9] transition-colors h-full cursor-pointer"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
@@ -303,11 +317,13 @@ export default function ProductDetailPage() {
                     type="number" 
                     value={quantity} 
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-16 text-center font-bold text-brand-primary outline-none" 
+                    className="w-16 text-center font-heading font-bold text-brand-dark outline-none" 
                   />
                   <button 
+                    type="button"
+                    aria-label="Increase quantity"
                     onClick={() => setQuantity(quantity + 1)} 
-                    className="px-4 text-brand-text/50 hover:text-brand-primary hover:bg-brand-background transition-colors h-full"
+                    className="px-4 text-brand-text-muted hover:text-brand-primary hover:bg-[#DCF5E9] transition-colors h-full cursor-pointer"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -315,50 +331,50 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={!product.inStock || justAdded}
-                  className={`flex-1 h-12 inline-flex items-center justify-center font-bold rounded-xl text-base transition-all duration-200 shadow-md ${
+                  className={`flex-1 h-12 inline-flex items-center justify-center font-heading font-black text-xs uppercase tracking-wider rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer ${
                     justAdded
-                      ? "bg-green-500 text-white"
+                      ? "bg-[#0F8A63] text-white"
                       : !product.inStock
-                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                      : "bg-brand-primary text-white hover:bg-brand-primary/90"
+                      ? "bg-[#E5EEE8] text-brand-text-muted cursor-not-allowed"
+                      : "bg-[#0F8A63] text-white hover:bg-[#0B7453] active:scale-[0.98]"
                   }`}
                 >
                   {justAdded ? (
-                    <><Check className="w-5 h-5 mr-2" /> Added to Cart!</>
+                    <><Check className="w-4 h-4 mr-2" /> Added to Cart!</>
                   ) : (
                     "Add to Cart"
                   )}
                 </button>
               </div>
               <Link href="/cart">
-                <Button variant="outline" size="lg" className="w-full">
-                  View Cart
+                <Button variant="outline" size="lg" className="w-full font-heading font-black text-xs uppercase tracking-wider">
+                  View Shopping Cart
                 </Button>
               </Link>
             </div>
 
             {/* Key Features */}
-            <div className="mt-auto pt-8 border-t border-brand-border/50">
-              <h3 className="font-heading font-semibold text-brand-primary mb-4">Key Features</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4">
+            <div className="mt-auto pt-6 border-t border-[#E5EEE8]">
+              <h3 className="font-heading font-black text-brand-dark text-xs uppercase tracking-wider mb-4">Key Specifications</h3>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-4">
                 {product.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-brand-text/80">
-                    <div className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0"></div>
-                    {feature}
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-brand-text font-medium">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#0F8A63] shrink-0" />
+                    <span>{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Trust Badges */}
-            <div className="flex items-center gap-6 mt-8 pt-6 border-t border-brand-border/50">
+            <div className="flex items-center gap-6 mt-6 pt-5 border-t border-[#E5EEE8]">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-brand-primary" />
-                <span className="text-xs font-semibold text-brand-text/70 uppercase">Genuine Product</span>
+                <ShieldCheck className="w-4 h-4 text-[#0F8A63]" />
+                <span className="text-[11px] font-bold text-brand-dark uppercase tracking-wider">Genuine Factory Product</span>
               </div>
               <div className="flex items-center gap-2">
-                <Truck className="w-5 h-5 text-brand-primary" />
-                <span className="text-xs font-semibold text-brand-text/70 uppercase">Local Delivery</span>
+                <Truck className="w-4 h-4 text-[#0F8A63]" />
+                <span className="text-[11px] font-bold text-brand-dark uppercase tracking-wider">Prompt Gwalior Delivery</span>
               </div>
             </div>
           </div>
@@ -366,29 +382,39 @@ export default function ProductDetailPage() {
       </main>
 
       {/* Mobile Sticky Action Bar (Glass) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/60 p-4 z-40 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-[#E5EEE8] p-3.5 z-40 shadow-[0_-8px_30px_rgba(24,35,31,0.08)]">
         <div className="flex items-center gap-3 max-w-lg mx-auto">
-          <div className="flex items-center border border-brand-border rounded-xl bg-white overflow-hidden h-10">
-            <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 text-brand-text/50 hover:text-brand-primary h-full">
+          <div className="flex items-center border border-[#E5EEE8] rounded-xl bg-white overflow-hidden h-10 shadow-xs">
+            <button 
+              type="button"
+              aria-label="Decrease quantity"
+              onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+              className="px-3 text-brand-text-muted hover:text-brand-primary h-full cursor-pointer"
+            >
               <Minus className="w-3 h-3" />
             </button>
-            <span className="w-8 text-center font-bold text-sm text-brand-primary">{quantity}</span>
-            <button onClick={() => setQuantity(quantity + 1)} className="px-3 text-brand-text/50 hover:text-brand-primary h-full">
+            <span className="w-8 text-center font-heading font-bold text-sm text-brand-dark">{quantity}</span>
+            <button 
+              type="button"
+              aria-label="Increase quantity"
+              onClick={() => setQuantity(quantity + 1)} 
+              className="px-3 text-brand-text-muted hover:text-brand-primary h-full cursor-pointer"
+            >
               <Plus className="w-3 h-3" />
             </button>
           </div>
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock || justAdded}
-            className={`flex-1 h-10 inline-flex items-center justify-center font-bold rounded-xl text-sm transition-all ${
+            className={`flex-1 h-10 inline-flex items-center justify-center font-heading font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-xs cursor-pointer ${
               justAdded
-                ? "bg-green-500 text-white"
+                ? "bg-[#0F8A63] text-white"
                 : !product.inStock
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : "bg-brand-primary text-white hover:bg-brand-primary/90"
+                ? "bg-[#E5EEE8] text-brand-text-muted cursor-not-allowed"
+                : "bg-[#0F8A63] text-white hover:bg-[#0B7453] active:scale-[0.98]"
             }`}
           >
-            {justAdded ? <><Check className="w-4 h-4 mr-1" /> Added!</> : "Add to Cart"}
+            {justAdded ? <><Check className="w-4 h-4 mr-1.5" /> Added!</> : "Add to Cart"}
           </button>
         </div>
       </div>

@@ -34,15 +34,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("kstc-cart");
-      if (saved) {
-        setItems(JSON.parse(saved));
+    const timer = setTimeout(() => {
+      try {
+        const saved = localStorage.getItem("kstc-cart");
+        if (saved) {
+          setItems(JSON.parse(saved));
+        }
+      } catch {
+        // Ignore parse errors
       }
-    } catch {
-      // Ignore parse errors
-    }
-    setIsHydrated(true);
+      setIsHydrated(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Persist cart to localStorage on change

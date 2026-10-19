@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/providers/CartProvider";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Khatu Shyam Trading Co. - Authorized Distributor",
-  description: "B2B & Retail E-commerce for Sentini Flopipes, Johnson's Pedders, and more in Gwalior & Chambal region.",
+  title: "Khatu Shyam Trading Co. - Authorized Wholesale Distributor",
+  description: "B2B Wholesale & Retail E-commerce for Sentini Flopipes, Johnson Pedders, and Polyworld Water Tanks in Gwalior & Chambal region.",
+  openGraph: {
+    title: "Khatu Shyam Trading Co. - Authorized Wholesale Distributor",
+    description: "B2B Wholesale & Retail E-commerce for Sentini Flopipes, Johnson Pedders, and Polyworld Water Tanks in Gwalior & Chambal region.",
+    images: [{ url: "/og-preview.png", width: 1200, height: 630, alt: "Khatu Shyam Trading Co." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Khatu Shyam Trading Co. - Authorized Wholesale Distributor",
+    description: "B2B Wholesale & Retail E-commerce for Sentini Flopipes, Johnson Pedders, and Polyworld Water Tanks in Gwalior & Chambal region.",
+    images: ["/og-preview.png"],
+  },
 };
 
 export default function RootLayout({
@@ -26,14 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${montserrat.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col font-sans text-brand-text bg-brand-background relative">
+    <html lang="en" className="h-full antialiased">
+      <body className="min-h-full flex flex-col font-sans text-brand-text bg-brand-background relative selection:bg-brand-sand/40 selection:text-brand-primary">
         <CartProvider>
-          {/* Background Gradient Effect */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent h-[50vh] -z-10" />
+          {/* Subtle Ambient Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-brand-cream to-brand-cream h-[50vh] -z-10" />
 
           <Header />
 
@@ -43,17 +40,17 @@ export default function RootLayout({
 
           <Footer />
 
-          {/* Floating WhatsApp Button */}
+          {/* Floating WhatsApp Button (Deep Green & Sand Accent) */}
           <a
             href="https://wa.me/919340486840?text=Hello!%20I'm%20interested%20in%20your%20products.%20I've%20got%20you%20from%20your%20website.%20Let's%20have%20a%20good%20deal."
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-brand-primary text-white rounded-full shadow-lg shadow-brand-primary/30 hover:scale-110 hover:shadow-xl hover:shadow-brand-primary/40 transition-all duration-300 group ring-2 ring-brand-accent/30 ring-offset-2"
+            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-brand-primary text-white rounded-full shadow-lg shadow-brand-primary/30 hover:scale-110 hover:shadow-xl hover:shadow-brand-primary/40 transition-all duration-300 group ring-2 ring-brand-sand/70 ring-offset-2"
             title="Chat with us on WhatsApp"
           >
             <WhatsApp className="w-7 h-7" />
-            <span className="absolute right-16 glass-panel text-brand-primary text-sm font-medium px-3 py-1.5 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap border border-white/60">
-              Need help? Chat with us
+            <span className="absolute right-16 glass text-brand-primary text-xs font-bold px-3 py-1.5 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap border border-brand-border">
+              Need wholesale help? Chat with us
             </span>
           </a>
         </CartProvider>

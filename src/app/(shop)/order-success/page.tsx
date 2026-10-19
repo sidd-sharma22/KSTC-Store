@@ -32,16 +32,19 @@ export default function OrderSuccessPage() {
   const [order, setOrder] = useState<OrderData | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = sessionStorage.getItem("kstc-order");
-      if (raw) {
-        setOrder(JSON.parse(raw));
-        // Clear after reading so refreshing won't show stale data
-        sessionStorage.removeItem("kstc-order");
+    const timer = setTimeout(() => {
+      try {
+        const raw = sessionStorage.getItem("kstc-order");
+        if (raw) {
+          setOrder(JSON.parse(raw));
+          // Clear after reading so refreshing won't show stale data
+          sessionStorage.removeItem("kstc-order");
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const formatPrice = (amount: number) =>
@@ -51,7 +54,7 @@ export default function OrderSuccessPage() {
   if (!order) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center py-24 px-4">
-        <h2 className="text-2xl font-bold font-heading text-brand-primary mb-2">No Order Found</h2>
+        <h2 className="text-2xl font-bold font-heading text-brand-dark mb-2">No Order Found</h2>
         <p className="text-brand-text/60 mb-8 text-center max-w-sm">
           It looks like you haven&apos;t placed an order yet, or this page has already been viewed.
         </p>
@@ -74,15 +77,15 @@ export default function OrderSuccessPage() {
           className="flex justify-center mb-8"
         >
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckCircle className="w-14 h-14 text-green-500" />
+            <div className="w-24 h-24 rounded-full bg-[#DCF5E9] border border-[#E5EEE8] flex items-center justify-center shadow-xs">
+              <CheckCircle className="w-12 h-12 text-[#0F8A63]" />
             </div>
             {/* Pulse ring */}
             <motion.div
               initial={{ scale: 1, opacity: 0.5 }}
-              animate={{ scale: 1.5, opacity: 0 }}
+              animate={{ scale: 1.4, opacity: 0 }}
               transition={{ duration: 1.5, repeat: 2, ease: "easeOut" }}
-              className="absolute inset-0 rounded-full border-2 border-green-400"
+              className="absolute inset-0 rounded-full border-2 border-[#0F8A63]/60"
             />
           </div>
         </motion.div>
@@ -94,11 +97,11 @@ export default function OrderSuccessPage() {
           transition={{ delay: 0.3 }}
           className="text-center mb-10"
         >
-          <h1 className="text-3xl md:text-4xl font-bold font-heading text-brand-primary mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black font-heading text-brand-dark mb-3 tracking-tight">
             Order Placed Successfully!
           </h1>
-          <p className="text-brand-text/70 text-lg">
-            Thank you for your order. We&apos;ll process it shortly.
+          <p className="text-brand-text-muted text-base sm:text-lg font-medium">
+            Thank you for choosing KSTC. Our dispatch team will process your order promptly.
           </p>
         </motion.div>
 
@@ -107,17 +110,17 @@ export default function OrderSuccessPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl border border-brand-border/50 shadow-sm overflow-hidden"
+          className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] shadow-xs overflow-hidden"
         >
           {/* Order Number Bar */}
-          <div className="bg-brand-primary px-6 py-4 flex items-center justify-between">
+          <div className="bg-[#0F8A63] px-6 py-4 flex items-center justify-between">
             <div>
-              <div className="text-[10px] text-white/70 uppercase tracking-widest font-semibold">Order Number</div>
-              <div className="text-lg font-bold text-white font-heading">{order.orderNumber}</div>
+              <div className="text-[10px] text-[#FAF8F2] uppercase tracking-widest font-bold">Order Reference</div>
+              <div className="text-base sm:text-lg font-black text-white font-heading">{order.orderNumber}</div>
             </div>
             <div className="text-right">
-              <div className="text-[10px] text-white/70 uppercase tracking-widest font-semibold">Date</div>
-              <div className="text-sm font-semibold text-white">
+              <div className="text-[10px] text-[#FAF8F2] uppercase tracking-widest font-bold">Booking Date</div>
+              <div className="text-xs sm:text-sm font-semibold text-white">
                 {new Date(order.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
               </div>
             </div>
@@ -126,68 +129,68 @@ export default function OrderSuccessPage() {
           <div className="p-6 md:p-8">
             {/* Items */}
             <div className="mb-6">
-              <div className="flex items-center gap-2 text-xs font-bold text-brand-text/50 uppercase tracking-widest mb-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0F8A63] uppercase tracking-widest mb-3">
                 <Package className="w-4 h-4" /> Items Ordered
               </div>
               <div className="space-y-2">
                 {order.items.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-sm py-2 border-b border-brand-border/30 last:border-0">
+                  <div key={idx} className="flex justify-between text-xs sm:text-sm py-2 border-b border-[#E5EEE8] last:border-0">
                     <div>
-                      <span className="font-medium text-brand-primary">{item.title}</span>
-                      <span className="text-brand-text/50 ml-2 text-xs">({item.brand})</span>
+                      <span className="font-bold text-brand-dark">{item.title}</span>
+                      <span className="text-brand-text-muted ml-2 text-xs">({item.brand})</span>
                     </div>
-                    <span className="text-brand-text/70 font-medium">×{item.quantity}</span>
+                    <span className="text-brand-text font-bold">×{item.quantity}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Price Breakdown */}
-            <div className="mb-6 p-4 bg-brand-background/50 rounded-xl border border-brand-border/50">
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-brand-text/70">
+            <div className="mb-6 p-5 bg-[#FAF8F2] rounded-2xl border border-[#E5EEE8]">
+              <div className="space-y-2 text-xs sm:text-sm">
+                <div className="flex justify-between text-brand-text font-medium">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-brand-primary">{formatPrice(order.subtotal)}</span>
+                  <span className="font-bold text-brand-dark">{formatPrice(order.subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-brand-text/70">
+                <div className="flex justify-between text-brand-text font-medium">
                   <span>GST (18%)</span>
-                  <span className="font-semibold text-brand-primary">{formatPrice(order.gst)}</span>
+                  <span className="font-bold text-brand-dark">{formatPrice(order.gst)}</span>
                 </div>
-                <div className="flex justify-between text-brand-text/70">
-                  <span>Delivery</span>
-                  <span className="font-semibold text-green-600">Free</span>
+                <div className="flex justify-between text-brand-text font-medium">
+                  <span>Local Gwalior Delivery</span>
+                  <span className="font-bold text-[#0F8A63] uppercase text-xs">Free</span>
                 </div>
-                <div className="flex justify-between pt-3 mt-3 border-t border-brand-border/50">
-                  <span className="font-bold text-brand-primary">Total</span>
-                  <span className="font-bold text-xl text-brand-primary">{formatPrice(order.total)}</span>
+                <div className="flex justify-between pt-3 mt-3 border-t border-[#E5EEE8]">
+                  <span className="font-heading font-black text-sm uppercase tracking-wider text-brand-dark">Total Amount</span>
+                  <span className="font-heading font-black text-xl text-[#0F8A63]">{formatPrice(order.total)}</span>
                 </div>
               </div>
             </div>
 
             {/* Delivery & Payment Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
               <div>
-                <div className="flex items-center gap-2 text-xs font-bold text-brand-text/50 uppercase tracking-widest mb-3">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#0F8A63] uppercase tracking-widest mb-2.5">
                   <MapPin className="w-4 h-4" /> Delivery Address
                 </div>
-                <div className="text-sm text-brand-text/80 space-y-1">
-                  <div className="font-semibold text-brand-primary">
+                <div className="text-xs sm:text-sm text-brand-text-muted space-y-1">
+                  <div className="font-bold text-brand-dark">
                     {order.deliveryDetails.firstName} {order.deliveryDetails.lastName}
                   </div>
                   <div>{order.deliveryDetails.address}</div>
                   <div>{order.deliveryDetails.city}, {order.deliveryDetails.state} - {order.deliveryDetails.pincode}</div>
-                  <div>{order.deliveryDetails.phone}</div>
+                  <div className="font-medium text-[#0F8A63]">{order.deliveryDetails.phone}</div>
                 </div>
               </div>
               <div>
-                <div className="flex items-center gap-2 text-xs font-bold text-brand-text/50 uppercase tracking-widest mb-3">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#0F8A63] uppercase tracking-widest mb-2.5">
                   <CreditCard className="w-4 h-4" /> Payment Method
                 </div>
-                <div className="text-sm font-semibold text-brand-primary">
+                <div className="text-xs sm:text-sm font-bold text-brand-dark">
                   {PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod}
                 </div>
-                <div className="text-xs text-brand-text/50 mt-1">
-                  A confirmation email has been sent to {order.deliveryDetails.email}
+                <div className="text-xs text-brand-text-muted mt-1 leading-relaxed">
+                  Tax invoice copy dispatched to <strong className="text-[#0F8A63]">{order.deliveryDetails.email}</strong>
                 </div>
               </div>
             </div>
@@ -202,12 +205,12 @@ export default function OrderSuccessPage() {
           className="flex flex-col sm:flex-row gap-4 mt-8"
         >
           <Link href="/category/all-products" className="flex-1">
-            <Button variant="solid" size="lg" className="w-full font-bold group">
+            <Button variant="solid" size="lg" className="w-full font-heading font-black text-xs uppercase tracking-wider py-3.5 group shadow-sm">
               Continue Shopping <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform inline-block" />
             </Button>
           </Link>
           <Link href="/">
-            <Button variant="outline" size="lg" className="w-full">
+            <Button variant="outline" size="lg" className="w-full font-heading font-black text-xs uppercase tracking-wider py-3.5">
               Back to Home
             </Button>
           </Link>
