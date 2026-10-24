@@ -2,11 +2,14 @@
 
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { Trash2, ChevronRight, Lock, CheckCircle2, ShoppingCart, Plus, Minus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Trash2, ChevronRight, Lock, CheckCircle2, ShoppingCart, Plus, Minus, Sparkles, PhoneCall } from "lucide-react";
 import { useCart } from "@/providers/CartProvider";
+import { getCurrentUserAction } from "@/app/actions/auth";
 
 export default function CartCheckoutPage() {
-  const { items, removeFromCart, updateQuantity, clearCart, totalItems, subtotal } = useCart();
+  const router = useRouter();
+  const { items, removeFromCart, updateQuantity, clearCart, totalItems, subtotal, isLoggedIn } = useCart();
 
   const gst = Math.round(subtotal * 0.18);
   const total = subtotal + gst;
@@ -18,6 +21,35 @@ export default function CartCheckoutPage() {
       maximumFractionDigits: 0
     }).format(amount);
   };
+
+  const handleProceedToCheckout = async () => {
+    const user = await getCurrentUserAction();
+    if (!user) {
+      router.push("/login?redirect=/checkout");
+    } else {
+      router.push("/checkout");
+    }
+  };
+
+  // Unauthenticated Cart State
+  if (!isLoggedIn) {
+    return (
+      <div className="flex flex-col flex-1 items-center justify-center py-24 px-4 text-center">
+        <div className="w-24 h-24 rounded-full bg-[#DCF5E9] flex items-center justify-center mb-6 border border-[#E5EEE8]">
+          <Lock className="w-10 h-10 text-[#0F8A63]" />
+        </div>
+        <h2 className="text-2xl font-bold font-heading text-brand-dark mb-2">Sign In to View Your Cart</h2>
+        <p className="text-brand-text/60 mb-8 text-center max-w-sm text-xs leading-relaxed">
+          Your shopping cart is securely saved to your account. Please log in to view items and proceed to checkout.
+        </p>
+        <Link href="/login?redirect=/cart">
+          <Button variant="solid" size="lg">
+            Sign In / Register &rarr;
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   // Empty Cart State
   if (items.length === 0) {
@@ -87,6 +119,46 @@ export default function CartCheckoutPage() {
                 Clear All
               </button>
             </div>
+
+            {/* High Value Order > ₹20,000 Consultation Callout */}
+            {subtotal >= 20000 && (
+              <div className="mb-6 p-4.5 bg-gradient-to-r from-[#DCF5E9]/90 to-[#FAF8F2] border-2 border-[#0F8A63]/30 rounded-2xl shadow-xs">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#0F8A63] text-white flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-1">
+                      <h4 className="font-heading font-black text-xs sm:text-sm text-brand-dark uppercase tracking-wide">
+                        Want Any Discount?
+                      </h4>
+                      <span className="bg-[#0F8A63] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                        Project Deal
+                      </span>
+                    </div>
+                    <p className="text-xs text-brand-text-muted mt-1 leading-relaxed">
+                      We provides discounts on or above ₹20,000 cart value. Before completing payment, contact us. After a quick discussion, you will receive a custom coupon code for direct discounts!
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2 mt-2.5 pt-2.5 border-t border-[#0F8A63]/20 text-xs">
+                      <a
+                        href={`https://wa.me/919340486840?text=Hello%20KSTC!%20My%20cart%20subtotal%20is%20${formatPrice(subtotal)}.%20I%20would%20like%20to%20know%20about%20discounts%20before%20checkout.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-2xs"
+                      >
+                        <PhoneCall className="w-3 h-3" /> WhatsApp: +91 93404 86840
+                      </a>
+                      <a
+                        href="tel:+919340486840"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#E5EEE8] text-brand-dark rounded-xl font-bold hover:border-[#0F8A63]"
+                      >
+                        Call: +91 93404 86840
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* Cart Items */}
             <div className="divide-y divide-[#E5EEE8]">
@@ -181,11 +253,14 @@ export default function CartCheckoutPage() {
               <span className="font-heading font-black text-2xl text-[#0F8A63]">{formatPrice(total)}</span>
             </div>
 
-            <Link href="/checkout">
-              <Button variant="solid" size="lg" className="w-full font-heading font-black text-xs uppercase tracking-wider shadow-sm hover:shadow-md group py-3.5">
-                Proceed to Checkout <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform inline-block" />
-              </Button>
-            </Link>
+            <Button
+              variant="solid"
+              size="lg"
+              onClick={handleProceedToCheckout}
+              className="w-full font-heading font-black text-xs uppercase tracking-wider shadow-sm hover:shadow-md group py-3.5 cursor-pointer"
+            >
+              Proceed to Checkout <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform inline-block" />
+            </Button>
             
             <div className="mt-5 pt-5 border-t border-[#E5EEE8] flex flex-col gap-2.5">
               <div className="flex items-center gap-2 text-xs text-brand-text-muted font-medium">

@@ -2,18 +2,19 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Clock, Navigation, Globe } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us & Warehouse Showroom Location",
   description:
-    "Get in touch with Khatu Shyam Trading Co. in Maharajpura, Gwalior. Wholesale inquiries, dealer pricing, and technical support for Sentini pipes, Johnson Pedders, and Polyworld tanks.",
+    "Get in touch with Khatu Shyam Trading Co. in Gwalior. Wholesale inquiries, dealer pricing, and technical support for Sentini pipes, Johnson Pedders, and Polyworld tanks.",
   alternates: {
     canonical: "https://store-kstco.vercel.app/contact-us",
   },
   openGraph: {
     title: "Contact Us & Warehouse Showroom | Khatu Shyam Trading Co. Gwalior",
     description:
-      "Visit our wholesale warehouse in Maharajpura, Gwalior or contact our commercial sales team directly for distributor pricing.",
+      "Visit our wholesale warehouse in Gwalior or contact our commercial sales team directly for distributor pricing.",
     url: "https://store-kstco.vercel.app/contact-us",
     images: [{ url: "/og-preview.png", width: 1024, height: 547, alt: "Contact KSTC Gwalior" }],
   },
@@ -34,7 +35,7 @@ export default function ContactUsPage() {
           Contact Us
         </h1>
         <p className="text-xs sm:text-sm text-brand-text-muted mt-2 max-w-xl font-medium">
-          Get in touch with our commercial sales desk, technical assistance, or visit our wholesale warehouse showroom in Maharajpura, Gwalior.
+          Get in touch with our commercial sales desk, technical assistance, or visit our wholesale warehouse showroom in Gwalior.
         </p>
       </div>
 
@@ -44,32 +45,7 @@ export default function ContactUsPage() {
         <div className="flex-1 flex flex-col gap-8">
 
           {/* Contact Form */}
-          <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-[#E5EEE8] p-6 md:p-8 shadow-xs">
-            <h2 className="text-xl sm:text-2xl font-black text-brand-dark mb-6 font-heading tracking-tight">Send us a Message</h2>
-            <form className="space-y-4 sm:space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                <div className="space-y-1.5">
-                  <label htmlFor="name" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Your Name</label>
-                  <input type="text" id="name" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="Enter your full name" />
-                </div>
-                <div className="space-y-1.5">
-                  <label htmlFor="email" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Email Address</label>
-                  <input type="email" id="email" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="you@company.com" />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <label htmlFor="phone" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Contact Phone</label>
-                <input type="tel" id="phone" className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all" placeholder="10-digit mobile number" />
-              </div>
-              <div className="space-y-1.5">
-                <label htmlFor="message" className="text-xs font-bold text-brand-dark uppercase tracking-wider">Message or Product Inquiries</label>
-                <textarea id="message" rows={4} className="w-full px-4 py-2.5 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] text-sm text-brand-text placeholder:text-brand-text-muted transition-all resize-y" placeholder="Describe the pipe sizes, quantities, or sanitary items required..."></textarea>
-              </div>
-              <Button type="button" variant="solid" className="w-full md:w-auto font-heading font-black text-xs uppercase tracking-wider px-8 py-3 shadow-sm">
-                Send Message
-              </Button>
-            </form>
-          </div>
+          <ContactForm />
 
           {/* Map */}
           <div className="rounded-3xl overflow-hidden border border-[#E5EEE8] shadow-xs bg-white min-h-[400px]">

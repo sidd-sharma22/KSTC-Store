@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCart, Heart, Check } from "lucide-react";
 import { useCart } from "@/providers/CartProvider";
+import { useWishlist } from "@/providers/WishlistProvider";
 import { useState } from "react";
 
 export interface ProductCardProps {
@@ -34,7 +35,9 @@ export default function ProductCard({
   isTradeUser = false
 }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const [justAdded, setJustAdded] = useState(false);
+  const isFavorited = isInWishlist(id);
 
   const formatPrice = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -44,9 +47,9 @@ export default function ProductCard({
     }).format(amount);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!inStock) return;
-    addToCart({
+    const added = await addToCart({
       id,
       title,
       brand,
@@ -58,8 +61,24 @@ export default function ProductCard({
       specs,
       isTradeUser,
     });
-    setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1500);
+    if (added) {
+      setJustAdded(true);
+      setTimeout(() => setJustAdded(false), 1500);
+    }
+  };
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist({
+      id,
+      title,
+      brand,
+      category,
+      imageUrl,
+      unitPrice,
+      specs,
+    });
   };
 
   return (
@@ -75,10 +94,15 @@ export default function ProductCard({
       {/* Favorite Action */}
       <button 
         type="button"
-        aria-label="Add to favorites"
-        className="absolute top-3 right-3 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full text-brand-text-muted hover:text-red-500 hover:bg-white transition-all border border-brand-border shadow-xs"
+        onClick={handleToggleFavorite}
+        aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+        className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all border shadow-xs ${
+          isFavorited
+            ? "bg-red-50 border-red-200 text-red-500 scale-105"
+            : "bg-white/90 backdrop-blur-sm border-brand-border text-brand-text-muted hover:text-red-500 hover:bg-white"
+        }`}
       >
-        <Heart className="w-4 h-4" />
+        <Heart className={`w-4 h-4 transition-transform ${isFavorited ? "fill-red-500 text-red-500" : ""}`} />
       </button>
 
       {/* Image Area */}
@@ -88,7 +112,12 @@ export default function ProductCard({
             {imageUrl ? (
               <Image src={imageUrl} alt={title} fill className="object-contain" sizes="(max-width: 768px) 100vw, 33vw" />
             ) : (
-              <span className="font-heading text-xs uppercase tracking-wider">Product Image</span>
+              <div className="flex flex-col items-center justify-center gap-1.5 p-3 text-center">
+                <span className="w-8 h-8 rounded-full bg-brand-tint/60 text-brand-primary flex items-center justify-center text-xs font-black">
+                  KSTC
+                </span>
+                <span className="font-heading text-[11px] uppercase tracking-wider text-brand-dark font-bold line-clamp-1">{title}</span>
+              </div>
             )}
           </div>
         </div>

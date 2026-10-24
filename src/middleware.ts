@@ -41,10 +41,10 @@ export async function middleware(request: NextRequest) {
   const isProtectedPath =
     pathname.startsWith("/account") ||
     pathname.startsWith("/orders") ||
-    pathname.startsWith("/trade-portal");
-
-  // Admin routes
-  const isAdminPath = pathname.startsWith("/admin");
+    pathname.startsWith("/dealer") ||
+    pathname.startsWith("/plumber") ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/dev-admin");
 
   // If user is accessing login page while already authenticated -> redirect to home
   if (pathname === "/login" && isAuthenticated) {
@@ -58,8 +58,40 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // If user is accessing admin routes without admin role -> redirect to home
-  if (isAdminPath && userRole !== "ADMIN") {
+  // Developer Dashboard: Restricted to Super Admin / Tech Team
+  const isDevPath = pathname.startsWith("/dev-admin");
+  if (isDevPath && userRole !== "ADMIN_SUPER" && userRole !== "ADMIN") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // Business Owner Admin Dashboard: Restricted to Business Admin team
+  const isAdminPath = pathname.startsWith("/admin");
+  const isAdminRole =
+    userRole === "ADMIN_SUPER" ||
+    userRole === "ADMIN_SALES" ||
+    userRole === "ADMIN_BILLING" ||
+    userRole === "STAFF_WAREHOUSE" ||
+    userRole === "ADMIN";
+  if (isAdminPath && !isAdminRole) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // Shop Owner (Dealer) Portal: Restricted to Authorized Dealers or Admins
+  const isDealerPath = pathname.startsWith("/dealer");
+  const isDealerRole =
+    userRole === "AUTHORIZED_DEALER" ||
+    userRole === "TRADE" ||
+    isAdminRole;
+  if (isDealerPath && !isDealerRole) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // Plumber Portal: Restricted to Certified Plumbers or Admins
+  const isPlumberPath = pathname.startsWith("/plumber");
+  const isPlumberRole =
+    userRole === "PLUMBER" ||
+    isAdminRole;
+  if (isPlumberPath && !isPlumberRole) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -67,5 +99,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/account/:path*", "/orders/:path*", "/trade-portal/:path*", "/admin/:path*", "/login"],
+  matcher: [
+    "/account/:path*",
+    "/orders/:path*",
+    "/dealer/:path*",
+    "/plumber/:path*",
+    "/admin/:path*",
+    "/dev-admin/:path*",
+    "/login",
+  ],
 };

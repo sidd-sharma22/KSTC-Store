@@ -12,6 +12,15 @@ datasource db {
 // -----------------------------------------------------------------------------
 
 enum Role {
+  RETAIL_CUSTOMER
+  CONTRACTOR
+  AUTHORIZED_DEALER
+  PLUMBER
+  ADMIN_SUPER
+  ADMIN_SALES
+  ADMIN_BILLING
+  STAFF_WAREHOUSE
+  // Legacy roles for backward compatibility with existing session/user data
   RETAIL
   TRADE
   ADMIN
@@ -37,6 +46,7 @@ enum OrderStatus {
 }
 
 enum PaymentMethod {
+  CASHFREE
   PAY_LATER
   BANK_TRANSFER
   RAZORPAY
@@ -62,32 +72,121 @@ enum QuoteStatus {
   REJECTED
 }
 
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum PayoutStatus {
+  REQUESTED
+  PROCESSING
+  PAID
+  REJECTED
+}
+
 // -----------------------------------------------------------------------------
-// CORE MODELS
+// USER & PROFILE MODELS
 // -----------------------------------------------------------------------------
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  passwordHash  String?
-  phone         String?
+  id                    String          @id @default(cuid())
+  name                  String?
+  email                 String?         @unique
+  emailVerified         DateTime?
+  passwordHash          String?
+  phone                 String?         @unique
   
-  role          Role      @default(RETAIL)
+  role                  Role            @default(RETAIL_CUSTOMER)
   
-  // Trade Specific Fields
-  shopName      String?
-  gstNumber     String?
-  tradeStatus   TradeStatus?
-  creditLimit   Float?
+  // Tag to distinguish Normal Customers vs Contractors (e.g. "HOMEOWNER", "BUILDER", "CONTRACTOR")
+  customerTag           String?
+  companyName           String?
   
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  // Authorized Dealer / Trade Specific Fields
+  shopName              String?
+  gstNumber             String?
+  tradeStatus           TradeStatus?
+  creditLimit           Float?          @default(0)
+  usedCredit            Float?          @default(0)
+  
+  // Referral tracking
+  referredByPlumberCode String?
+  
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
-  addresses     Address[]
+  addresses             Address[]
+  orders                Order[]
+  quotes                Quote[]
+  plumberProfile        PlumberProfile?
+}
+
+model PlumberProfile {
+  id                String                @id @default(cuid())
+  userId            String                @unique
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plumberCode       String                @unique // e.g. "PLUM-7840" or mobile number
+  totalPoints       Float                 @default(0)
+  redeemedPoints    Float                 @default(0)
+  activePoints      Float                 @default(0)
+  commissionRate    Float                 @default(0.05) // 5% default referral commission
+  upiId             String?
+  bankAccountNumber String?
+  bankIfsc          String?
+  bankAccountName   String?
+  
+  referrals         ReferralTransaction[]
+  payoutRequests    PayoutRequest[]
+  
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+}
+
+model ReferralTransaction {
+  id             String         @id @default(cuid())
+  plumberId      String
+  plumber        PlumberProfile @relation(fields: [plumberId], references: [id], onDelete: Cascade)
+  orderId        String         @unique
+  order          Order          @relation(fields: [orderId], references: [id])
+  orderAmount    Float
+  commissionRate Float          @default(0.05)
+  pointsEarned   Float
+  status         PaymentStatus  @default(PENDING)
+  createdAt      DateTime       @default(now())
+}
+
+model PayoutRequest {
+  id                 String         @id @default(cuid())
+  plumberId          String
+  plumber            PlumberProfile @relation(fields: [plumberId], references: [id], onDelete: Cascade)
+  pointsRedeemed     Float
+  cashAmount         Float          // 1 Point = 1 INR
+  payoutStatus       PayoutStatus   @default(REQUESTED)
+  cashfreeTransferId String?
+  utrNumber          String?
+  adminNotes         String?
+  processedAt        DateTime?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model Coupon {
+  id            String       @id @default(cuid())
+  code          String       @unique
+  description   String?
+  discountType  DiscountType @default(PERCENTAGE)
+  discountValue Float
+  minOrderValue Float        @default(0)
+  maxDiscount   Float?
+  validFrom     DateTime     @default(now())
+  validUntil    DateTime?
+  usageLimit    Int?
+  usageCount    Int          @default(0)
+  allowedRoles  Role[]
+  isActive      Boolean      @default(true)
   orders        Order[]
-  quotes        Quote[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }
 
 model Address {
@@ -124,27 +223,32 @@ model Category {
 }
 
 model Product {
-  id             String    @id @default(cuid())
-  sku            String    @unique
-  title          String
-  slug           String    @unique
-  brand          String?
-  categoryId     String
-  category       Category  @relation(fields: [categoryId], references: [id])
-  description    String?   @db.Text
-  basePrice      Float
-  stockCount     Int       @default(0)
-  datasheetUrl   String?
-  isActive       Boolean   @default(true)
+  id              String                 @id @default(cuid())
+  sku             String                 @unique
+  title           String
+  slug            String                 @unique
+  brand           String?
+  categoryId      String
+  category        Category               @relation(fields: [categoryId], references: [id])
+  description     String?                @db.Text
+  basePrice       Float                  // Retail MRP
+  dealerPrice     Float?                 // Authorized Dealer Wholesale Price
+  contractorPrice Float?                 // Contractor Discounted Price
+  stockCount      Int                    @default(0)
+  datasheetUrl    String?
+  isActive        Boolean                @default(true)
+  hsnCode         String?                @default("3917")
+  gstRate         Float                  @default(18.0)
+  unit            String                 @default("PCS")
   
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
 
-  specifications ProductSpecification[]
-  images         ProductImage[]
-  bulkPricing    BulkPricingTier[]
-  orderItems     OrderItem[]
-  quoteItems     QuoteItem[]
+  specifications  ProductSpecification[]
+  images          ProductImage[]
+  bulkPricing     BulkPricingTier[]
+  orderItems      OrderItem[]
+  quoteItems      QuoteItem[]
 }
 
 model ProductSpecification {
@@ -176,24 +280,43 @@ model BulkPricingTier {
 // -----------------------------------------------------------------------------
 
 model Order {
-  id                String         @id @default(cuid())
-  userId            String
-  user              User           @relation(fields: [userId], references: [id])
-  totalAmount       Float
-  taxAmount         Float
-  status            OrderStatus    @default(PENDING)
-  paymentMethod     PaymentMethod
-  paymentStatus     PaymentStatus  @default(PENDING)
+  id                    String               @id @default(cuid())
+  userId                String
+  user                  User                 @relation(fields: [userId], references: [id])
+  totalAmount           Float
+  taxAmount             Float
+  discountAmount        Float                @default(0)
+  status                OrderStatus          @default(PENDING)
+  paymentMethod         PaymentMethod
+  paymentStatus         PaymentStatus        @default(PENDING)
   
-  shippingAddressId String?
-  shippingAddress   Address?       @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  // Cashfree PG fields
+  cashfreeOrderId       String?              @unique
+  cashfreePaymentId     String?
   
-  deliveryType      DeliveryType
+  // Dynamic Coupons
+  couponId              String?
+  coupon                Coupon?              @relation(fields: [couponId], references: [id])
   
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
+  // Plumber Referral Link
+  referredByPlumberCode String?
+  referralTransaction   ReferralTransaction?
+  
+  // Real Bill Upload & Customer Dispatch
+  realBillUrl           String?              @db.Text
+  realBillFilename      String?
+  realBillUploadedAt    DateTime?
+  realBillUploadedBy    String?
 
-  items             OrderItem[]
+  shippingAddressId     String?
+  shippingAddress       Address?             @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  
+  deliveryType          DeliveryType
+  
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+
+  items                 OrderItem[]
 }
 
 model OrderItem {
@@ -231,7 +354,7 @@ model QuoteItem {
 }
 
 // -----------------------------------------------------------------------------
-// OPERATIONAL MODELS
+// OPERATIONAL MODELS & INTEGRATIONS
 // -----------------------------------------------------------------------------
 
 model StoreLocation {
@@ -244,10 +367,6 @@ model StoreLocation {
   longitude      Float?
 }
 
-// -----------------------------------------------------------------------------
-// AUTHENTICATION & OTP
-// -----------------------------------------------------------------------------
-
 model VerificationOtp {
   id        String   @id @default(cuid())
   email     String
@@ -258,3 +377,12 @@ model VerificationOtp {
   @@index([email])
 }
 
+model TallySyncLog {
+  id            String   @id @default(cuid())
+  batchId       String
+  vouchersCount Int
+  status        String   // "SUCCESS" | "FAILED"
+  xmlData       String?  @db.Text
+  errorMessage  String?  @db.Text
+  createdAt     DateTime @default(now())
+}

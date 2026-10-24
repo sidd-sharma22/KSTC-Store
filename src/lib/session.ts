@@ -1,14 +1,8 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { SessionPayload, UserRole } from "./session-types";
 
-export interface SessionPayload {
-  userId: string;
-  email: string;
-  name?: string | null;
-  role: "RETAIL" | "TRADE" | "ADMIN";
-  tradeStatus?: "PENDING" | "APPROVED" | "REJECTED" | null;
-  shopName?: string | null;
-}
+export * from "./session-types";
 
 const SESSION_COOKIE_NAME = "kstc_session";
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days
@@ -66,9 +60,12 @@ export async function getSession(): Promise<SessionPayload | null> {
       userId: payload.userId as string,
       email: payload.email as string,
       name: (payload.name as string) || null,
-      role: (payload.role as "RETAIL" | "TRADE" | "ADMIN") || "RETAIL",
+      phone: (payload.phone as string) || null,
+      role: (payload.role as UserRole) || "RETAIL_CUSTOMER",
+      customerTag: (payload.customerTag as string) || null,
       tradeStatus: (payload.tradeStatus as "PENDING" | "APPROVED" | "REJECTED" | null) || null,
       shopName: (payload.shopName as string) || null,
+      plumberCode: (payload.plumberCode as string) || null,
     };
   } catch {
     return null;

@@ -20,9 +20,15 @@ import {
   Building2,
   Truck,
   Sparkles,
+  Wrench,
+  Store,
+  HardHat,
+  UserCheck,
+  Phone as PhoneIcon,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { sendOtpAction, verifyOtpAction } from "@/app/actions/auth";
+import { UserRole } from "@/lib/session-types";
 
 interface AuthPageContentProps {
   initialMode: "login" | "register";
@@ -39,7 +45,9 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
   // Form Fields
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState<"RETAIL" | "TRADE">("RETAIL");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState<UserRole>("RETAIL_CUSTOMER");
+  const [customerTag, setCustomerTag] = useState("HOMEOWNER");
   const [shopName, setShopName] = useState("");
   const [gstNumber, setGstNumber] = useState("");
 
@@ -91,7 +99,12 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
       return;
     }
 
-    if (isSignUp && role === "TRADE" && !shopName.trim()) {
+    if (isSignUp && (!phone.trim() || !/^\d{10}$/.test(phone.replace(/\D/g, "")))) {
+      setErrorMessage("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    if (isSignUp && (role === "AUTHORIZED_DEALER" || role === "TRADE") && !shopName.trim()) {
       setErrorMessage("Please enter your shop or business name.");
       return;
     }
@@ -101,7 +114,9 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
       const result = await sendOtpAction({
         email,
         name,
+        phone,
         role,
+        customerTag: role === "RETAIL_CUSTOMER" || role === "CONTRACTOR" ? customerTag : undefined,
         shopName,
         gstNumber,
         isSignUp,
@@ -183,7 +198,9 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
         email,
         otp: otpCode,
         name,
+        phone,
         role,
+        customerTag: role === "RETAIL_CUSTOMER" || role === "CONTRACTOR" ? customerTag : undefined,
         shopName,
         gstNumber,
         isSignUp,
@@ -194,7 +211,15 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
       } else {
         setSuccessMessage(result.message || "Authenticated successfully!");
         setTimeout(() => {
-          router.push("/");
+          if (result.user?.role === "ADMIN_SUPER" || result.user?.role === "ADMIN") {
+            router.push("/admin");
+          } else if (result.user?.role === "AUTHORIZED_DEALER" || result.user?.role === "TRADE") {
+            router.push("/dealer");
+          } else if (result.user?.role === "PLUMBER") {
+            router.push("/plumber/rewards");
+          } else {
+            router.push("/");
+          }
           router.refresh();
         }, 600);
       }
@@ -217,7 +242,9 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
       const result = await sendOtpAction({
         email,
         name,
+        phone,
         role,
+        customerTag: role === "RETAIL_CUSTOMER" || role === "CONTRACTOR" ? customerTag : undefined,
         shopName,
         gstNumber,
         isSignUp,
@@ -464,31 +491,82 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
 
               {isSignUp && (
                 <>
-                  {/* Account Type Toggle */}
+                  {/* Account Type Selector - 4 distinct categories */}
                   <div>
                     <label className="block text-xs font-bold text-[#18231F] uppercase tracking-wider mb-2">
-                      Account Type
+                      Select Customer Category
                     </label>
-                    <div className="grid grid-cols-2 gap-2 p-1 bg-[#FAF8F2] rounded-2xl border border-[#E5EEE8]">
+                    <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
-                        onClick={() => setRole("RETAIL")}
-                        className={`py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer ${role === "RETAIL"
-                            ? "bg-[#0F8A63] text-white shadow-xs"
-                            : "text-brand-text-muted hover:text-[#0F8A63]"
-                          }`}
+                        onClick={() => setRole("RETAIL_CUSTOMER")}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col gap-1.5 ${
+                          role === "RETAIL_CUSTOMER"
+                            ? "bg-[#DCF5E9] border-[#0F8A63] text-[#0F8A63] shadow-xs"
+                            : "bg-[#FAF8F2] border-[#E5EEE8] text-brand-dark hover:border-[#0F8A63]/40"
+                        }`}
                       >
-                        Retail Customer
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <UserCheck className="w-3.5 h-3.5" />
+                          <span>Direct Customer</span>
+                        </div>
+                        <p className="text-[10px] text-brand-text-muted leading-tight">
+                          Homeowner buying for personal house/renovation
+                        </p>
                       </button>
+
                       <button
                         type="button"
-                        onClick={() => setRole("TRADE")}
-                        className={`py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer ${role === "TRADE"
-                            ? "bg-[#0F8A63] text-white shadow-xs"
-                            : "text-brand-text-muted hover:text-[#0F8A63]"
-                          }`}
+                        onClick={() => setRole("CONTRACTOR")}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col gap-1.5 ${
+                          role === "CONTRACTOR"
+                            ? "bg-[#DCF5E9] border-[#0F8A63] text-[#0F8A63] shadow-xs"
+                            : "bg-[#FAF8F2] border-[#E5EEE8] text-brand-dark hover:border-[#0F8A63]/40"
+                        }`}
                       >
-                        Trade / Contractor
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <HardHat className="w-3.5 h-3.5" />
+                          <span>Contractor</span>
+                        </div>
+                        <p className="text-[10px] text-brand-text-muted leading-tight">
+                          Builders, civil contractors &amp; site supervisors
+                        </p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setRole("AUTHORIZED_DEALER")}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col gap-1.5 ${
+                          role === "AUTHORIZED_DEALER"
+                            ? "bg-[#DCF5E9] border-[#0F8A63] text-[#0F8A63] shadow-xs"
+                            : "bg-[#FAF8F2] border-[#E5EEE8] text-brand-dark hover:border-[#0F8A63]/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <Store className="w-3.5 h-3.5" />
+                          <span>Authorized Dealer</span>
+                        </div>
+                        <p className="text-[10px] text-brand-text-muted leading-tight">
+                          Retail shop owner reselling sanitary &amp; pipes
+                        </p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setRole("PLUMBER")}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col gap-1.5 ${
+                          role === "PLUMBER"
+                            ? "bg-[#DCF5E9] border-[#0F8A63] text-[#0F8A63] shadow-xs"
+                            : "bg-[#FAF8F2] border-[#E5EEE8] text-brand-dark hover:border-[#0F8A63]/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 font-bold text-xs">
+                          <Wrench className="w-3.5 h-3.5" />
+                          <span>Certified Plumber</span>
+                        </div>
+                        <p className="text-[10px] text-brand-text-muted leading-tight">
+                          Independent plumbing technicians &amp; sanitary fitters
+                        </p>
                       </button>
                     </div>
                   </div>
@@ -496,7 +574,7 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
                   {/* Full Name */}
                   <div>
                     <label className="block text-xs font-bold text-[#18231F] uppercase tracking-wider mb-1.5">
-                      Full Name
+                      Full Name *
                     </label>
                     <div className="relative group">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted group-focus-within:text-[#0F8A63] transition-colors" />
@@ -511,18 +589,36 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
                     </div>
                   </div>
 
-                  {/* Trade Specific Fields */}
-                  {role === "TRADE" && (
+                  {/* Phone Number - Compulsory for all */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#18231F] uppercase tracking-wider mb-1.5">
+                      Mobile Number *
+                    </label>
+                    <div className="relative group">
+                      <PhoneIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted group-focus-within:text-[#0F8A63] transition-colors" />
+                      <input
+                        type="tel"
+                        placeholder="Enter 10-digit mobile number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full pl-11 pr-4 py-3 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] transition-all text-sm text-brand-text placeholder:text-brand-text-muted shadow-2xs"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Dealer Specific Fields */}
+                  {(role === "AUTHORIZED_DEALER" || role === "TRADE") && (
                     <>
                       <div>
                         <label className="block text-xs font-bold text-[#18231F] uppercase tracking-wider mb-1.5">
-                          Shop / Business Name *
+                          Shop / Hardware Business Name *
                         </label>
                         <div className="relative group">
                           <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted group-focus-within:text-[#0F8A63] transition-colors" />
                           <input
                             type="text"
-                            placeholder="e.g. Shyam Sanitary & Plumbing Works"
+                            placeholder="Enter shop or business name"
                             value={shopName}
                             onChange={(e) => setShopName(e.target.value)}
                             className="w-full pl-11 pr-4 py-3 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] transition-all text-sm text-brand-text placeholder:text-brand-text-muted shadow-2xs"
@@ -539,12 +635,19 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
                           <FileText className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted group-focus-within:text-[#0F8A63] transition-colors" />
                           <input
                             type="text"
-                            placeholder="e.g. 23AAAAA0000A1Z5"
+                            placeholder="Enter GSTIN (if applicable)"
                             value={gstNumber}
                             onChange={(e) => setGstNumber(e.target.value.toUpperCase())}
                             className="w-full pl-11 pr-4 py-3 bg-white border border-[#E5EEE8] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0F8A63]/30 focus:border-[#0F8A63] transition-all text-sm text-brand-text placeholder:text-brand-text-muted shadow-2xs uppercase"
                           />
                         </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 p-3.5 bg-[#FAF8F2] border border-[#E5EEE8] rounded-xl">
+                        <AlertCircle className="w-4 h-4 text-[#0F8A63] shrink-0 mt-0.5" />
+                        <p className="text-xs text-brand-text-muted leading-relaxed">
+                          Authorized dealer accounts are reviewed by our Warehouse desk to activate wholesale dealer margin tiers and credit lines.
+                        </p>
                       </div>
                     </>
                   )}
@@ -554,7 +657,7 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
               {/* Email Address */}
               <div>
                 <label className="block text-xs font-bold text-[#18231F] uppercase tracking-wider mb-1.5">
-                  Email Address
+                  Email Address *
                 </label>
                 <div className="relative group">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-text-muted group-focus-within:text-[#0F8A63] transition-colors" />
@@ -568,15 +671,6 @@ export default function AuthPageContent({ initialMode }: AuthPageContentProps) {
                   />
                 </div>
               </div>
-
-              {isSignUp && role === "TRADE" && (
-                <div className="flex items-start gap-3 p-3.5 bg-[#FAF8F2] border border-[#E5EEE8] rounded-xl">
-                  <AlertCircle className="w-4 h-4 text-[#0F8A63] shrink-0 mt-0.5" />
-                  <p className="text-xs text-brand-text-muted leading-relaxed">
-                    Trade accounts are verified by our distributor desk to activate contractor credit terms and bulk wholesale margins.
-                  </p>
-                </div>
-              )}
 
               <Button
                 type="submit"
